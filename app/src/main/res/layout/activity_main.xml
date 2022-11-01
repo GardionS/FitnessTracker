@@ -11,7 +11,7 @@
         android:gravity="center"
         android:text="Fitness Tracker" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <TextView
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,4 +23,5 @@
         android:onClick="goToMainLayoutButton"
         android:text="Press to continue"
         android:textColor="@color/black" />
+
 </RelativeLayout>
