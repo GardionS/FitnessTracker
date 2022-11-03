@@ -14,28 +14,33 @@ import com.example.fitnesstracker.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainScreen extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
+public class MainScreen extends AppCompatActivity{
     ActivityMainBinding binding;
-    BottomNavigationView bottomNavigationView;
-    @SuppressLint("MissingInflatedId")
+    NavigationBarView bottomNavigationView;
+
+    HomeFragment homeFragment = new HomeFragment();
+    SecondFragment secondFragment = new SecondFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_screen);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setOnItemReselectedListener((NavigationBarView.OnItemReselectedListener) this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,homeFragment).commit();
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,homeFragment).commit();
+                        return true;
+                    case R.id.activity:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,secondFragment).commit();
+                        return true;
+                }
+                return false;
+            }
+        });
         bottomNavigationView.setSelectedItemId(R.id.home);
-        }
-        HomeFragment homeFragment = new HomeFragment();
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,homeFragment).commit();
-                return true;
-        }
-        return false;
     }
-
 }
