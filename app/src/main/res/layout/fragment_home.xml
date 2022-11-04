@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/MainActivity"
     tools:context=".MainActivity" >
 
     <LinearLayout
@@ -27,7 +28,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_baseline_home_24"
+                    android:src="@drawable/ic_baseline_account_circle_24"
                     android:scaleType="centerCrop"/>
             </androidx.cardview.widget.CardView>
 
@@ -88,18 +89,33 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:cardCornerRadius="250dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="15dp">
-                        <ImageView
-                            android:id="@+id/imageView"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:layout_gravity="center"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_baseline_directions_walk_24"
-                            android:visibility="visible"
-                            />
+                         <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                             <ProgressBar
+                                 android:layout_width="150dp"
+                                 android:layout_height="150dp"
+                                 android:progress="0"
+                                 android:indeterminate="false"
+                                 android:background="@drawable/circular_shape"
+                                 style="?android:attr/progressBarStyleHorizontal"
+                                 android:progressDrawable="@drawable/ciruclar_progress"
+                                 android:layout_centerInParent="true" />
+
+                             <ImageView
+                                 android:id="@+id/imageView"
+                                 android:layout_width="100dp"
+                                 android:layout_height="100dp"
+                                 android:layout_centerInParent="true"
+                                 android:layout_gravity="center"
+                                 android:scaleType="fitCenter"
+                                 android:src="@drawable/ic_baseline_directions_walk_24"
+                                 android:visibility="visible" />
+                        </RelativeLayout>
+
                     </androidx.cardview.widget.CardView>
                     <ImageView
                         android:layout_width="wrap_content"
