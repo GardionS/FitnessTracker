@@ -10,16 +10,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.fitnesstracker.databinding.ActivityMainBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainScreen extends AppCompatActivity{
-    ActivityMainBinding binding;
     NavigationBarView bottomNavigationView;
 
     HomeFragment homeFragment = new HomeFragment();
     SecondFragment secondFragment = new SecondFragment();
+    HistoryFragment historyFragment = new HistoryFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +35,8 @@ public class MainScreen extends AppCompatActivity{
                     case R.id.activity:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,secondFragment).commit();
                         return true;
+                    case R.id.history:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,historyFragment).commit();
                 }
                 return false;
             }
