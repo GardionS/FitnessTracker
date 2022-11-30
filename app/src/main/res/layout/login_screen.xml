@@ -31,7 +31,7 @@
         android:textSize="30dp"
         android:layout_marginTop="25dp"/>
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/loginEmail"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="Email"
@@ -46,7 +46,7 @@
         android:layout_marginTop="25dp"
         android:background="@drawable/box_text_input"/>
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/loginPassword"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="Password"
@@ -66,7 +66,7 @@
         android:layout_weight="1">
 
         <Button
-            android:id="@+id/btn_register"
+            android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -76,7 +76,7 @@
             android:textColor="@android:color/white"
             android:text="Login"/>
         <TextView
-            android:id="@+id/changeRegister"
+            android:id="@+id/goToRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Don't have an account? Click here to Register"

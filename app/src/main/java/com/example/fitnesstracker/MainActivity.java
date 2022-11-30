@@ -14,20 +14,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_screen);
-        Intent intent = new Intent();
-        intent.setClass(this, com.example.fitnesstracker.MainScreen.class);
-        startActivity(intent);
 //        setContentView(R.layout.splash_screen);
-
-    }
-
-
-    public void goToMainLayoutButton(View view){
-
-        setContentView(R.layout.main_screen);
-        Intent intent = new Intent();
-        intent.setClass(this, com.example.fitnesstracker.MainScreen.class);
+        Intent intent = new Intent(this, SplashActivity.class);
         startActivity(intent);
+        finish();
     }
 }
