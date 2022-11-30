@@ -9,7 +9,7 @@
         android:layout_height="165dp"
         app:srcCompat="@mipmap/ic_logo"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:id="@+id/mainLogo"/>
     <TextView
         android:id="@+id/titleMainMenu"
@@ -111,32 +111,29 @@
         android:background="@drawable/box_text_input"
         android:textSize="15sp" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="30dp"
-            android:layout_centerInParent="true"
-            android:textColor="@android:color/white"
-            android:text="Register"/>
+            android:text="Register"
+            android:textColor="@android:color/white" />
         <TextView
-            android:id="@+id/changeToLogin"
+            android:id="@+id/goToLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Already have an account? Click here to login"
             android:textSize="15sp"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
+            android:layout_gravity="center"
             android:textColor="@color/blue_200"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

@@ -1,14 +1,11 @@
 package com.example.fitnesstracker;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.MenuItem;
-import android.view.View;
 
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -18,6 +15,7 @@ public class MainScreen extends AppCompatActivity{
     HomeFragment homeFragment = new HomeFragment();
     SecondFragment secondFragment = new SecondFragment();
     HistoryFragment historyFragment = new HistoryFragment();
+    EditProfileFragment editProfileFragment = new EditProfileFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +35,9 @@ public class MainScreen extends AppCompatActivity{
                         return true;
                     case R.id.history:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,historyFragment).commit();
+                        return true;
+                    case R.id.editProfile:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, editProfileFragment).commit();
                 }
                 return false;
             }

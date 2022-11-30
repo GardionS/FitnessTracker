@@ -14,17 +14,21 @@ public class ValidateText {
     public ValidateText(Context context){
         this.context = context;
     }
-    public boolean validateEditText(EditText editText) {
+    public boolean validateEditText(EditText editText, String errorMessage) {
         String text = editText.getText().toString().trim();
-        if(text.isEmpty()) {
-            editText.setError("This field cannot be blank");
+        if(TextUtils.isEmpty(text)) {
+            editText.setError(errorMessage);
             return false;
         }
         return true;
     }
-    public boolean validateEmailEditText(EditText emailEditText) {
+    public boolean validateEmailEditText(EditText emailEditText, String errorMessage) {
         CharSequence email = emailEditText.getText().toString();
-        return !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        if(TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            emailEditText.setError(errorMessage);
+            return false;
+        }
+        return true;
     }
 
     public void hideKeyboard(View view) {

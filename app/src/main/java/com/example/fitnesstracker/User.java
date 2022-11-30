@@ -7,6 +7,7 @@ public class User {
     private String password;
     private int weight;
     private int age;
+    private int exp;
 
     public int getId() {
         return id;
@@ -54,5 +55,12 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setExp(int exp) {
+        this.exp = exp;
+    }
+    public int getExp(){
+        return exp;
     }
 }

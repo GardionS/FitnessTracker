@@ -11,4 +11,9 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_message_email">Enter Valid Email</string>
+    <string name="error_message_password">Enter Valid Password</string>
+    <string name="error_message_username">Enter Valid Username</string>
+    <string name="error_message_age">Enter Valid Age</string>
+    <string name="error_message_weight">Enter Valid Weight</string>
 </resources>

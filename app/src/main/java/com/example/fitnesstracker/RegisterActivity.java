@@ -1,75 +1,98 @@
 package com.example.fitnesstracker;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 
-import java.util.regex.Pattern;
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+    private final AppCompatActivity activity = RegisterActivity.this;
 
-public class RegisterActivity extends AppCompatActivity {
-
+    private ValidateText validateText;
+    private DatabaseUser databaseHelper;
+    private EditText usernameEditText, emailEditText, passwordEditText, ageEditText, weightEditText;
+    private User user;
+    private AppCompatButton buttonRegister;
+    private AppCompatTextView buttonGoToLogin;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_screen);
-        EditText username = findViewById(R.id.registerUsername);
-        EditText email = findViewById(R.id.registerEmail);
-        EditText password = findViewById(R.id.registerPassword);
-        EditText age = findViewById(R.id.registerAge);
-        EditText weight = findViewById(R.id.registerWeight);
-
-        Button register = findViewById(R.id.registerButton);
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkData(username, email, password, age, weight);
-            }
-        });
-        TextView goToLogin = findViewById(R.id.changeToLogin);
-        goToLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-    }
-    private void checkData(EditText username, EditText email, EditText password, EditText age, EditText weight) {
-        if (checkEmpty(username)){
-            Toast toast = Toast.makeText(this, "You must enter username to register", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        if (checkEmail(email)){
-            email.setError("Email is required");
-        }
-        if (checkEmail(password)) {
-            password.setError("Password is required");
-        }
-        if(checkEmpty(age)) {
-            age.setError("Age is required");
-        }
-        if(checkEmpty(weight)){
-            weight.setError("Weight is required");
-        }
-    }
-    private Boolean checkEmail(EditText emailEdit){
-        CharSequence email = emailEdit.getText().toString();
-        return !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-    private Boolean checkEmpty(EditText textEdit) {
-        CharSequence text = textEdit.getText().toString();
-        return TextUtils.isEmpty(text);
+        initObjects();
+        initVariable();
+        initListener();
     }
 
+    private void initObjects() {
+        databaseHelper = new DatabaseUser(activity);
+        validateText = new ValidateText(activity);
+        user = new User();
+    }
 
+    private void initListener() {
+        buttonRegister.setOnClickListener(this);
+        buttonGoToLogin.setOnClickListener(this);
+    }
+
+    @SuppressLint("WrongViewCast")
+    private void initVariable(){
+        usernameEditText = findViewById(R.id.registerUsername);
+        emailEditText = findViewById(R.id.registerEmail);
+        passwordEditText = findViewById(R.id.registerPassword);
+        ageEditText = findViewById(R.id.registerAge);
+        weightEditText = findViewById(R.id.registerWeight);
+        buttonRegister = (AppCompatButton) findViewById(R.id.registerButton);
+        buttonGoToLogin = (AppCompatTextView) findViewById(R.id.goToLogin);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.registerButton:
+                uploadDataToSQL();
+                break;
+            case R.id.goToLogin:
+                // Navigate to Login
+                goToLogin();
+                break;
+        }
+    }
+    private void uploadDataToSQL(){
+        if(!validateText.validateEmailEditText(emailEditText, getString(R.string.error_message_email))
+        ||!validateText.validateEditText(usernameEditText, getString(R.string.error_message_username))
+        ||!validateText.validateEditText(passwordEditText, getString(R.string.error_message_password))
+        ||!validateText.validateEditText(ageEditText, getString(R.string.error_message_age))
+        ||!validateText.validateEditText(weightEditText, getString(R.string.error_message_weight))) {
+            return;
+        }
+        if(!databaseHelper.checkUser(emailEditText.getText().toString().trim())) {
+            user.setUserName(usernameEditText.getText().toString().trim());
+            user.setPassword(passwordEditText.getText().toString().trim());
+            user.setEmail(emailEditText.getText().toString().trim());
+            databaseHelper.addUser(user);
+            emptyEditText();
+            goToLogin();//After the user is added then the screen redirect to the login
+        } else{
+
+        }
+    }
+    private void emptyEditText() {
+        usernameEditText.setText(null);
+        emailEditText.setText(null);
+        passwordEditText.setText(null);
+        ageEditText.setText(null);
+        weightEditText.setText(null);
+    }
+
+    private void goToLogin() {
+        Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
