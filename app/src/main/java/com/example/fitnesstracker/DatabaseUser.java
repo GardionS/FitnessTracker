@@ -7,10 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseUser extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 4;
-    private static final String DATABASE_NAME = "FitnessTracker.db";
-    private static final String TABLE_USER = "user";
-    private static final String COLUMN_USER_ID = "userId";
+    public static final int DATABASE_VERSION = 4;
+    public static final String DATABASE_NAME = "FitnessTracker.db";
+    public static final String TABLE_USER = "user";
+    public static final String COLUMN_USER_ID = "userId";
     private static final String COLUMN_USER_NAME = "userName";
     private static final String COLUMN_USER_EMAIL = "userEmail";
     private static final String COLUMN_USER_PASSWORD = "userPassword";
