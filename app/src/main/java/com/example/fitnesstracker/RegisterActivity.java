@@ -15,7 +15,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private final AppCompatActivity activity = RegisterActivity.this;
 
     private ValidateText validateText;
-    private DatabaseUser databaseHelper;
+    private DatabaseUser databaseUser;
     private EditText usernameEditText, emailEditText, passwordEditText, ageEditText, weightEditText;
     private User user;
     private AppCompatButton buttonRegister;
@@ -30,7 +30,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void initObjects() {
-        databaseHelper = new DatabaseUser(activity);
+
+        databaseUser = new DatabaseUser(activity);
         validateText = new ValidateText(activity);
         user = new User();
     }
@@ -71,11 +72,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         ||!validateText.validateEditText(weightEditText, getString(R.string.error_message_weight))) {
             return;
         }
-        if(!databaseHelper.checkUser(emailEditText.getText().toString().trim())) {
+        if(!databaseUser.checkUser(emailEditText.getText().toString().trim())) {
             user.setUserName(usernameEditText.getText().toString().trim());
             user.setPassword(passwordEditText.getText().toString().trim());
             user.setEmail(emailEditText.getText().toString().trim());
-            databaseHelper.addUser(user);
+            user.setAge(Integer.parseInt(ageEditText.getText().toString()));
+            user.setWeight(Integer.parseInt(weightEditText.getText().toString()));
+            databaseUser.addUser(user);
             emptyEditText();
             goToLogin();//After the user is added then the screen redirect to the login
         } else{

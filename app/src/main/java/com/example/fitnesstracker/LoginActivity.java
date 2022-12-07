@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected SharedPreferences sharedPreferences;
     private String email, password;
     private EditText emailEdit, passwordEdit;
-    private DatabaseUser databaseHelper;
+    private DatabaseUser databaseUser;
     private ValidateText validateText;
     private AppCompatButton buttonLogin;
     private AppCompatTextView buttonGoToRegister;
@@ -48,19 +48,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
     private void initObjects() {
-        databaseHelper = new DatabaseUser(activity);
+        databaseUser = new DatabaseUser(activity);
         validateText = new ValidateText(activity);
     }
     private void verifyDataSQL() {
         if (!validateText.validateEmailEditText(emailEdit, getString(R.string.error_message_email))) {
             return;
         }
-        if (!validateText.validateEditText(passwordEdit, getString(R.string.error_message_email))) {
+        if (!validateText.validateEditText(passwordEdit, getString(R.string.error_message_password))) {
             return;
-        }
-        if (databaseHelper.checkUser(emailEdit.getText().toString().trim()
+        }if (databaseUser.checkUser(emailEdit.getText().toString().trim()
                 , passwordEdit.getText().toString().trim())) {
-            User user = databaseHelper.getUser(emailEdit.getText().toString().trim());
+            User user = databaseUser.getUser(emailEdit.getText().toString().trim());
             Intent accountsIntent = new Intent(activity, MainScreen.class);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(EMAIL_KEY, user.getEmail());
@@ -69,9 +68,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             editor.putInt(WEIGHT_KEY, user.getWeight());
             editor.putInt(EXP_KEY, user.getExp());
             editor.putInt(ID_KEY, user.getId());
+
             editor.apply();
 //            accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
-            emptyEditText();
+//            emptyEditText();
+
             startActivity(accountsIntent);
         } else {
             // Snack Bar to show success message that record is wrong
@@ -95,6 +96,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         password = sharedPreferences.getString("PASSWORD_KEY", null);
         buttonLogin = (AppCompatButton) findViewById(R.id.loginButton);
         buttonGoToRegister = (AppCompatTextView) findViewById(R.id.goToRegister);
+
+        emailEdit.setText("asd@gmail.com");
+        passwordEdit.setText("asdasd");
     }
 
     private void initListener() {
@@ -115,9 +119,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                    editor.putString(PASSWORD_KEY, passwordEdit.getText().toString());
 //                    editor.putString(USERNAME_KEY, )
                     editor.apply();
-                    Intent intent = new Intent(LoginActivity.this, MainScreen.class);
+//                    Intent intent = new Intent(LoginActivity.this, MainScreen.class);
+//                    startActivity(intent);
+                    Intent intent = new Intent(LoginActivity.this, ForegroundService.class);
                     startActivity(intent);
-                    finish();
+
                 }
             }
         });

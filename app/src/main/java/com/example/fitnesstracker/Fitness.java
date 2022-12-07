@@ -6,6 +6,15 @@ public class Fitness {
     private String date;
     private int walk;
 
+    public Fitness() {
+    }
+
+    public Fitness(int userId, String date) {
+        this.userId = userId;
+        this.date = date;
+        this.walk = 0;
+    }
+
     public int getId() {
         return id;
     }
