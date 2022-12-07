@@ -148,6 +148,8 @@
                                 android:background="@drawable/circular_shape"
                                 android:indeterminate="false"
                                 android:progress="0"
+                                android:id="@+id/homeStepsBar"
+                                android:max="6000"
                                 android:progressDrawable="@drawable/ciruclar_progress" />
 
                             <ImageView
@@ -178,7 +180,7 @@
                     android:text="Walking" />
 
                 <TextView
-                    android:id="@+id/steps"
+                    android:id="@+id/homeSteps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

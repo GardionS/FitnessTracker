@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SecondFragment"
     android:orientation="vertical">
 
 
@@ -55,7 +54,7 @@
                         android:orientation="horizontal"
                         android:paddingVertical="15dp">
                     <ImageView
-                        android:id="@+id/logoJogging"
+                        android:id="@+id/activityLogoJogging"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_marginStart="20dp"
@@ -67,25 +66,26 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="15dp"
-                        android:layout_toRightOf="@+id/logoJogging"
+                        android:layout_toRightOf="@+id/activityLogoJogging"
                         android:text="Jogging" />
                     <TextView
+                        android:id="@+id/activityCalorie"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0 cal"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@id/steps_counter"
+                        android:layout_toLeftOf="@id/activityStepCounter"
                         android:layout_marginRight="15dp"/>
                         <TextView
-                            android:id="@+id/steps_counter"
+                            android:id="@+id/activityStepCounter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0/6000 steps"
-                            android:layout_toLeftOf="@id/playRunning"
+                            android:layout_toLeftOf="@id/activityPlayJogging"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="15dp"/>
                         <ImageView
-                            android:id="@+id/playRunning"
+                            android:id="@+id/activityPlayJogging"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"

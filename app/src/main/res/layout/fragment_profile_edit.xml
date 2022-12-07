@@ -26,7 +26,7 @@
             android:text="Username"
             android:textSize="20sp"/>
         <EditText
-            android:id="@+id/edit_username"
+            android:id="@+id/editUsername"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="Name"
@@ -48,7 +48,7 @@
             android:text="Email"
             android:textSize="20sp"/>
         <EditText
-            android:id="@+id/edit_email"
+            android:id="@+id/editEmail"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/box_text_input"
@@ -71,7 +71,7 @@
             android:text="Weight"
             android:textSize="20sp"/>
         <EditText
-            android:id="@+id/weight"
+            android:id="@+id/editWeight"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/box_text_input"
@@ -95,7 +95,7 @@
             android:text="Age"
             android:textSize="20sp"/>
         <EditText
-            android:id="@+id/age"
+            android:id="@+id/editAge"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/box_text_input"
@@ -105,7 +105,7 @@
             android:textSize="15sp"/>
     </LinearLayout>
     <Button
-        android:id="@+id/button"
+        android:id="@+id/editProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Save"

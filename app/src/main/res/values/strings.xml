@@ -16,4 +16,6 @@
     <string name="error_message_username">Enter Valid Username</string>
     <string name="error_message_age">Enter Valid Age</string>
     <string name="error_message_weight">Enter Valid Weight</string>
+    <string name="error_message_password_old">Enter Valid Old Password</string>
+    <string name="error_message_password_new">Enter Valid New Password</string>
 </resources>
