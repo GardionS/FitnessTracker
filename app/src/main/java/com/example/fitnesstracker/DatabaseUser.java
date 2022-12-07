@@ -6,9 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DatabaseUser extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 4;
-    public static final String DATABASE_NAME = "FitnessTracker.db";
+public class DatabaseUser extends DatabaseMain {
     public static final String TABLE_USER = "user";
     public static final String COLUMN_USER_ID = "userId";
     private static final String COLUMN_USER_NAME = "userName";
@@ -17,28 +15,19 @@ public class DatabaseUser extends SQLiteOpenHelper {
     private static final String COLUMN_USER_AGE = "userAge";
     private static final String COLUMN_USER_WEIGHT = "userWeight";
     private static final String COLUMN_USER_EXP = "userExp";
-    private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
+    public static String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_NAME + " TEXT,"
             + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT,"
             + COLUMN_USER_AGE + " INTEGER," + COLUMN_USER_WEIGHT +  " INTEGER,"
             + COLUMN_USER_EXP + " INTEGER" + ")";
-    private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
-
+    public static String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
     public DatabaseUser(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_USER_TABLE);
-    }
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(DROP_USER_TABLE);
-        onCreate(db);
+        super(context);
+
     }
 
     public void addUser(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_NAME, user.getUserName());
         values.put(COLUMN_USER_EMAIL, user.getEmail());
@@ -53,6 +42,7 @@ public class DatabaseUser extends SQLiteOpenHelper {
 
     @SuppressLint("Range")
     public User getUser(String email) {
+        SQLiteDatabase db = getReadableDatabase();
         String[] columns = {
                 COLUMN_USER_ID,
                 COLUMN_USER_EMAIL,
@@ -62,8 +52,7 @@ public class DatabaseUser extends SQLiteOpenHelper {
                 COLUMN_USER_WEIGHT,
                 COLUMN_USER_EXP
         };
-        String whereClause = COLUMN_USER_EMAIL + " = " + email;
-        SQLiteDatabase db = this.getReadableDatabase();
+        String whereClause = COLUMN_USER_EMAIL + " = '" + email +"'";
 
         Cursor cursor = db.query(TABLE_USER,
                 columns,
@@ -87,31 +76,33 @@ public class DatabaseUser extends SQLiteOpenHelper {
         return user;
     }
 
-    public void updateUser(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public void updateUser(int userId, String username, String email, int age, int weight) {
+        SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_NAME, user.getUserName());
-        values.put(COLUMN_USER_EMAIL, user.getEmail());
-        values.put(COLUMN_USER_PASSWORD, user.getPassword());
-        values.put(COLUMN_USER_AGE, user.getAge());
-        values.put(COLUMN_USER_WEIGHT, user.getWeight());
-        values.put(COLUMN_USER_EXP, user.getExp());
-        db.update(TABLE_USER, values, COLUMN_USER_ID + " = ?",
-                new String[]{String.valueOf(user.getId())});
+        values.put(COLUMN_USER_NAME, username);
+        values.put(COLUMN_USER_EMAIL, email);
+        values.put(COLUMN_USER_AGE, age);
+        values.put(COLUMN_USER_WEIGHT, weight);
+        String whereClause = COLUMN_USER_ID + " = ?";
+        String[] selectionArgs = {Integer.toString(userId)};
+        db.update(TABLE_USER,
+                values,
+                whereClause,
+                selectionArgs);
         db.close();
     }
     public void deleteUser(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         db.delete(TABLE_USER, COLUMN_USER_ID + " = ?",
                 new String[]{String.valueOf(user.getId())});
         db.close();
     }
 
     public boolean checkUser(String email) {
+        SQLiteDatabase db = getReadableDatabase();
         String[] columns = {
                 COLUMN_USER_ID
         };
-        SQLiteDatabase db = this.getReadableDatabase();
         String selection = COLUMN_USER_EMAIL + " = ?";
         String[] selectionArgs = {email};
 
@@ -131,10 +122,11 @@ public class DatabaseUser extends SQLiteOpenHelper {
         return false;
     }
     public boolean checkUser(String email, String password) {
+
+        SQLiteDatabase db = getReadableDatabase();
         String[] columns = {
                 COLUMN_USER_ID
         };
-        SQLiteDatabase db = this.getReadableDatabase();
         String selection = COLUMN_USER_EMAIL + " = ?" + " AND " + COLUMN_USER_PASSWORD + " = ?";
         String[] selectionArgs = {email, password};
 
@@ -153,5 +145,38 @@ public class DatabaseUser extends SQLiteOpenHelper {
         }
         return false;
     }
+    @SuppressLint("Range")
+    public Boolean comparePassword(int userId, String oldPassword) {
+        SQLiteDatabase db = getReadableDatabase();
+        String[] columns = {
+                COLUMN_USER_PASSWORD
+        };
+        String selection = COLUMN_USER_ID + " = ?";
+        String[] selectionArgs = {Integer.toString(userId)};
 
+        Cursor cursor = db.query(TABLE_USER,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null);
+        String password =  null;
+        if(cursor.moveToFirst()) {
+           password =  cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD));
+        }
+        return password.equals(oldPassword);
+    }
+    public void insertNewPassword(int userId, String newPassword) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_PASSWORD, newPassword);
+        String whereClause = COLUMN_USER_ID + " = ?";
+        String[] selectionArgs = {Integer.toString(userId)};
+        db.update(TABLE_USER,
+                values,
+                whereClause,
+                selectionArgs);
+        db.close();
+    }
 }
