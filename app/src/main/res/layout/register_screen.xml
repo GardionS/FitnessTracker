@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/mainLogo"
-        android:layout_width="163dp"
-        android:layout_height="165dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_gravity="center"
         android:layout_marginTop="25dp"
         app:srcCompat="@mipmap/ic_logo" />
@@ -36,7 +36,6 @@
         android:id="@+id/registerUsername"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:inputType="text"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="25dp"
         android:layout_marginRight="20dp"
@@ -45,6 +44,7 @@
         android:drawableLeft="@drawable/ic_baseline_account_circle_24"
         android:drawablePadding="10dp"
         android:hint="Username"
+        android:inputType="text"
         android:maxLines="1"
         android:padding="15dp"
         android:textSize="15sp" />
@@ -124,11 +124,13 @@
         android:inputType="textPassword"
         android:maxLines="1"
         android:padding="15dp"
+        android:singleLine="true"
         android:textSize="15sp" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <Button
@@ -146,10 +148,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
             android:text="Already have an account? Click here to login"
             android:textColor="@color/blue_200"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:layout_alignParentBottom="true"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

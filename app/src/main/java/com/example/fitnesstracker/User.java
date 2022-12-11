@@ -8,6 +8,28 @@ public class User {
     private int weight;
     private int age;
     private int exp;
+    private boolean dailyQuest;
+
+    public User(int id, String userName, String email, int weight, int age, int exp, boolean dailyQuest) {
+        this.id = id;
+        this.userName = userName;
+        this.email = email;
+        this.weight = weight;
+        this.age = age;
+        this.exp = exp;
+        this.dailyQuest = dailyQuest;
+    }
+
+    public User() {
+    }
+
+    public boolean getDailyQuest() {
+        return dailyQuest;
+    }
+
+    public void setDailyQuest(boolean dailyQuest) {
+        this.dailyQuest = dailyQuest;
+    }
 
     public int getId() {
         return id;

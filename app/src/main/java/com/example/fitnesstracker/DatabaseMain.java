@@ -10,14 +10,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DatabaseMain extends SQLiteOpenHelper {
-    private DatabaseFitness databaseFitness;
-    private DatabaseUser databaseUser;
-
-    public static final int DATABASE_VERSION = 9;
+    public static final int DATABASE_VERSION = 10;
     public static final String DATABASE_NAME = "FitnessTracker.db";
 
     public DatabaseMain(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public static String getCurrentDate(String pattern) {
+        SimpleDateFormat format = new SimpleDateFormat(pattern);
+        Date date = new Date();
+        return format.format(date);
     }
 
     @Override
@@ -32,11 +35,5 @@ public class DatabaseMain extends SQLiteOpenHelper {
         db.execSQL(DatabaseFitness.DROP_FITNESS_TABLE);
         db.execSQL(DatabaseUser.DROP_USER_TABLE);
         onCreate(db);
-    }
-
-    public static String getCurrentDate(String pattern) {
-        SimpleDateFormat format = new SimpleDateFormat(pattern);
-        Date date = new Date();
-        return format.format(date);
     }
 }

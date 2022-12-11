@@ -11,20 +11,23 @@ import android.widget.EditText;
 
 public class ValidateText {
     Context context;
-    public ValidateText(Context context){
+
+    public ValidateText(Context context) {
         this.context = context;
     }
+
     public boolean validateEditText(EditText editText, String errorMessage) {
         String text = editText.getText().toString().trim();
-        if(TextUtils.isEmpty(text)) {
+        if (TextUtils.isEmpty(text)) {
             editText.setError(errorMessage);
             return false;
         }
         return true;
     }
+
     public boolean validateEmailEditText(EditText emailEditText, String errorMessage) {
         CharSequence email = emailEditText.getText().toString();
-        if(TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailEditText.setError(errorMessage);
             return false;
         }

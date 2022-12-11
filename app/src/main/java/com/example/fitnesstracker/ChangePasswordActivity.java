@@ -26,6 +26,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_change_password);
         initVariable();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
     private void initVariable() {
         sharedPreferences = getSharedPreferences(LoginActivity.SHARED_PREFS, Context.MODE_PRIVATE);
@@ -42,12 +43,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
         });
     }
     private void  checkPassword() {
-        if(!validateText.validateEditText(passwordOld, getString(R.string.error_message_password_old))
-        ||!validateText.validateEditText(passwordNew, getString(R.string.error_message_password_new))) {
+        if(validateText.validateEditText(passwordOld, getString(R.string.error_message_password_old))
+        && validateText.validateEditText(passwordNew, getString(R.string.error_message_password_new))) {
             if(databaseUser.comparePassword(sharedPreferences.getInt(ID_KEY, 0), passwordOld.getText().toString())) {
                 databaseUser.insertNewPassword(sharedPreferences.getInt(ID_KEY, 0), passwordNew.getText().toString());
+                finish();
             }
         }
     }
+
     
 }

@@ -18,4 +18,6 @@
     <string name="error_message_weight">Enter Valid Weight</string>
     <string name="error_message_password_old">Enter Valid Old Password</string>
     <string name="error_message_password_new">Enter Valid New Password</string>
+    <string name="error_message_login">Wrong email or password, please try again!</string>
+    <string name="error_message_regiter">The email is already in use</string>
 </resources>

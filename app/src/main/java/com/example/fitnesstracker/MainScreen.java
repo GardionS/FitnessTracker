@@ -1,6 +1,7 @@
 package com.example.fitnesstracker;
 
 import static com.example.fitnesstracker.ForegroundService.SERVICE_ID;
+import static com.example.fitnesstracker.LoginActivity.ID_KEY;
 
 import android.app.ActivityManager;
 import android.app.NotificationChannel;
@@ -16,26 +17,34 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
-public class MainScreen extends AppCompatActivity implements SensorEventListener {
+public class MainScreen extends AppCompatActivity {
     NavigationBarView bottomNavigationView;
 
     public static String MAIN_STEP_COUNTER = "main_step_count";
     public static String MAIN_LAST_STEP_COUNTER = "main_last_step_count";
     public static String MAIN_DATE_STEP = "main_date_count";
+    public static String MAIN_DAILY_QUEST = "main_daily_quest";
     private SharedPreferences sharedPreferences;
+    public static DatabaseFitness databaseFitnessMain;
     private HomeFragment homeFragment = new HomeFragment();
     private ActivityFragment activityFragment;
     private HistoryFragment historyFragment;
@@ -45,36 +54,39 @@ public class MainScreen extends AppCompatActivity implements SensorEventListener
     private Sensor stepSensor;
     public static int stepCount;
     public static String date;
+    private Stack stack = new Stack();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        databaseFitnessMain = new DatabaseFitness(this);
         sharedPreferences =  getSharedPreferences(LoginActivity.SHARED_PREFS, Context.MODE_PRIVATE);
         setContentView(R.layout.main_screen);
         initVariable();
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, homeFragment).commit();
 //        homeFragment.initUser();
+            stack.add("home");
         }
-//        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-//        stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-//        sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_FASTEST);
-//        Fragment fragment = null;
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
-//                        startForegroundServices();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, homeFragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, homeFragment).addToBackStack(null).commit();
+                        stack.add("home");
                         return true;
                     case R.id.activity:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, activityFragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, activityFragment).addToBackStack(null).commit();
+                        stack.add("activity");
                         return true;
                     case R.id.history:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, historyFragment).commit();
+                        stack.add("history");
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, historyFragment).addToBackStack(null).commit();
                         return true;
                     case R.id.profile:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, profileFragment).commit();
+                        stack.add("profile");
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, profileFragment).addToBackStack(null).commit();
+                        return true;
                 }
 
                 selectMenu(item.getItemId());
@@ -100,50 +112,20 @@ public class MainScreen extends AppCompatActivity implements SensorEventListener
 //        foregroundService = new ForegroundService();
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_FASTEST);
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         homeFragment = new HomeFragment();
-        activityFragment = new ActivityFragment(new DatabaseFitness(MainScreen.this));
-        historyFragment = new HistoryFragment(new DatabaseFitness(MainScreen.this));
+        activityFragment = new ActivityFragment(new DatabaseFitness(this));
+        historyFragment = new HistoryFragment(new DatabaseFitness(this));
         profileFragment = new ProfileFragment();
 
         startForegroundServices();
     }
-    public void onSensorChanged(SensorEvent sensorEvent) {
-        int currentStep = (int) sensorEvent.values[0];
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(MAIN_STEP_COUNTER, 0);
-        editor.putInt(MAIN_LAST_STEP_COUNTER, 0);
-//        if(sharedPreferences.getString(MAIN_DATE_STEP,"").equals(DatabaseMain.getCurrentDate("dd-MM-yyyy"))) { //data from today
-//            if(sharedPreferences.getInt(MAIN_LAST_STEP_COUNTER, 0) >= currentStep) {//Phone has reboot
-//                editor.putInt(MAIN_LAST_STEP_COUNTER, currentStep);
-//                editor.putInt(MAIN_STEP_COUNTER, currentStep);
-//                stepCount = currentStep;
-//            } else { //Phone has not reboot
-//
-//                editor.putInt(MAIN_STEP_COUNTER, sharedPreferences.getInt(MAIN_STEP_COUNTER,0) + stepCount);
-//                editor.putInt(MAIN_LAST_STEP_COUNTER, currentStep);
-//            }
-//        } else { //data from yesterday
-//            editor.putString(MAIN_DATE_STEP, DatabaseMain.getCurrentDate("dd-MM-yyyy"));
-//            date = DatabaseMain.getCurrentDate("dd-MM-yyyy");
-//            if(currentStep > sharedPreferences.getInt(MAIN_LAST_STEP_COUNTER, 0)) { //Phone not reboot
-//                stepCount = currentStep - sharedPreferences.getInt(MAIN_LAST_STEP_COUNTER, 0);
-//                editor.putInt(MAIN_LAST_STEP_COUNTER, currentStep);
-//                editor.putInt(MAIN_STEP_COUNTER, stepCount);
-//            } else { //phone has reboot
-//                stepCount = currentStep;
-//                editor.putInt(MAIN_LAST_STEP_COUNTER, currentStep);
-//                editor.putInt(MAIN_STEP_COUNTER, currentStep);
-//            }
-//        }
-        editor.apply();
-    }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-        //Nothing change regardless how not accurate it is
+    protected void onPause() {
+        super.onPause();
+        databaseFitnessMain.updateFitnessWalk(sharedPreferences.getInt(ID_KEY, 0), sharedPreferences.getString(MAIN_DATE_STEP, ""), sharedPreferences.getInt(MAIN_STEP_COUNTER, 0));
     }
     public static boolean isServiceRunningInForeground(Context context, Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -168,7 +150,6 @@ public class MainScreen extends AppCompatActivity implements SensorEventListener
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 ContextCompat.startForegroundService(this, foregroundService);
-//                startService(foregroundService);
             } else {
                 startService(foregroundService);
             }
@@ -183,5 +164,55 @@ public class MainScreen extends AppCompatActivity implements SensorEventListener
 
     public static String getDate() {
         return date;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Menu menu = bottomNavigationView.getMenu();
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        fragmentManager.popBackStackImmediate();
+//        int fragmentId = getCurrentFragment().getId();
+//        if(fragmentId == homeFragment.getId()) {
+//            menu.getItem(0).setChecked(true);
+//        } else if(fragmentId == activityFragment.getId()) {
+//            menu.getItem(1).setChecked(true);
+//        } else if (fragmentId == historyFragment.getId()) {
+//            menu.getItem(2).setChecked(true);
+//        } else if (fragmentId == profileFragment.getId()) {
+//            menu.getItem(3).setChecked(true);
+//        }
+
+        String backFragment = (String) stack.pop();
+        switch (backFragment) {
+            case "home":
+                menu.getItem(0).setChecked(true);
+                break;
+            case "activity":
+                menu.getItem(1).setChecked(true);
+                break;
+            case "history":
+                menu.getItem(2).setChecked(true);
+                break;
+            case "profile" :
+                menu.getItem(3).setChecked(true);
+                break;
+        }
+//        final Fragment currentFragment = getFragmentManager().getPrimaryNavigationFragment().getChildFragmentManager().getFragments().get(0);
+//        final NavController controller = Navigation.findNavController(this, R.id.nav_host_fragment);
+//        if (currentFragment instanceof IOnBackPressed)
+//            ((OnBackPressedListener) currentFragment).onBackPressed();
+//        else if (!controller.popBackStack())
+//            finish();
+    }
+    public Fragment getCurrentFragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        if(fragments != null){
+            for(Fragment fragment : fragments){
+                if(fragment != null && fragment.isVisible())
+                    return fragment;
+            }
+        }
+        return null;
     }
 }

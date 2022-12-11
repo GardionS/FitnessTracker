@@ -5,6 +5,7 @@ public class Fitness {
     private int userId;
     private String date;
     private int walk;
+    private int running;
 
     public Fitness() {
     }
@@ -13,6 +14,7 @@ public class Fitness {
         this.userId = userId;
         this.date = date;
         this.walk = 0;
+        this.running = 0;
     }
 
     public int getId() {
@@ -47,4 +49,11 @@ public class Fitness {
         this.walk = walk;
     }
 
+    public int getRunning() {
+        return running;
+    }
+
+    public void setRunning(int running) {
+        this.running = running;
+    }
 }

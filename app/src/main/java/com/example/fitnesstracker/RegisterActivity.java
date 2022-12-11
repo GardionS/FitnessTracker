@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private User user;
     private AppCompatButton buttonRegister;
     private AppCompatTextView buttonGoToLogin;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @SuppressLint("WrongViewCast")
-    private void initVariable(){
+    private void initVariable() {
         usernameEditText = findViewById(R.id.registerUsername);
         emailEditText = findViewById(R.id.registerEmail);
         passwordEditText = findViewById(R.id.registerPassword);
@@ -56,23 +58,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.registerButton:
-                uploadDataToSQL();
+                uploadDataToSQL(); //Check if
                 break;
             case R.id.goToLogin:
-                // Navigate to Login
-                goToLogin();
+                goToLogin(); //Navigate to login
                 break;
         }
     }
-    private void uploadDataToSQL(){
-        if(!validateText.validateEmailEditText(emailEditText, getString(R.string.error_message_email))
-        ||!validateText.validateEditText(usernameEditText, getString(R.string.error_message_username))
-        ||!validateText.validateEditText(passwordEditText, getString(R.string.error_message_password))
-        ||!validateText.validateEditText(ageEditText, getString(R.string.error_message_age))
-        ||!validateText.validateEditText(weightEditText, getString(R.string.error_message_weight))) {
+
+    private void uploadDataToSQL() {
+        if (validateText.validateEmailEditText(emailEditText, getString(R.string.error_message_email)) && validateText.validateEditText(usernameEditText, getString(R.string.error_message_username)) && validateText.validateEditText(passwordEditText, getString(R.string.error_message_password)) && validateText.validateEditText(ageEditText, getString(R.string.error_message_age)) && validateText.validateEditText(weightEditText, getString(R.string.error_message_weight))) {
             return;
         }
-        if(!databaseUser.checkUser(emailEditText.getText().toString().trim())) {
+        if (!databaseUser.checkUser(emailEditText.getText().toString().trim())) {
             user.setUserName(usernameEditText.getText().toString().trim());
             user.setPassword(passwordEditText.getText().toString().trim());
             user.setEmail(emailEditText.getText().toString().trim());
@@ -81,10 +79,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             databaseUser.addUser(user);
             emptyEditText();
             goToLogin();//After the user is added then the screen redirect to the login
-        } else{
-
+        } else {
+            Toast.makeText(this, getString(R.string.error_message_regiter), Toast.LENGTH_SHORT);
         }
     }
+
     private void emptyEditText() {
         usernameEditText.setText(null);
         emailEditText.setText(null);
@@ -94,8 +93,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void goToLogin() {
-        Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
-        finish();
     }
 }

@@ -18,7 +18,7 @@
             android:background="@color/blue_200">
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/TitleActivity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
@@ -32,22 +32,22 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="false">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:cardCornerRadius="250dp"
+                    app:cardCornerRadius="220dp"
                     android:layout_gravity="left"
                     android:layout_marginHorizontal="15dp"
-                    android:layout_marginTop="15dp">
+                    android:paddingVertical="5dp"
+                    android:layout_marginVertical="15dp">
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -61,22 +61,24 @@
                         android:src="@drawable/ic_baseline_directions_walk_24" />
 
                     <TextView
-                        android:id="@+id/jogging"
+                        android:id="@+id/activityRunning"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="15dp"
                         android:layout_toRightOf="@+id/activityLogoJogging"
-                        android:text="Jogging" />
+                        android:text="Running" />
                     <TextView
                         android:id="@+id/activityCalorie"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0 cal"
+                        android:textSize="12dp"
                         android:layout_centerVertical="true"
                         android:layout_toLeftOf="@id/activityStepCounter"
                         android:layout_marginRight="15dp"/>
                         <TextView
+                            android:textSize="12dp"
                             android:id="@+id/activityStepCounter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -84,13 +86,14 @@
                             android:layout_toLeftOf="@id/activityPlayJogging"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="15dp"/>
-                        <ImageView
+                        <ImageButton
                             android:id="@+id/activityPlayJogging"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:src="@drawable/ic_baseline_play_arrow_24"
-
+                            android:background="@null"
+                            android:clickable="true"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="15dp"/>
                     </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.example.fitnesstracker;
 
+import static com.example.fitnesstracker.ActivityFragment.SHARED_PREFS_ACTIVITY;
 import static com.example.fitnesstracker.LoginActivity.ID_KEY;
+import static com.example.fitnesstracker.LoginActivity.SHARED_PREFS;
 import static com.example.fitnesstracker.MainScreen.MAIN_DATE_STEP;
 import static com.example.fitnesstracker.MainScreen.MAIN_STEP_COUNTER;
 
@@ -47,7 +49,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     }
     private void initListener() {
-        profileChangePassword.setOnClickListener(this);
+        profileEditProfile.setOnClickListener(this);
         profileLogout.setOnClickListener(this);
         profileChangePassword.setOnClickListener(this);
     }
@@ -71,8 +73,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         startActivity(intent);
     }
     private void logout(){
-        databaseFitness.updateFitnessValue(sharedPreferences.getInt(ID_KEY, 0), sharedPreferences.getString(MAIN_DATE_STEP, ""), sharedPreferences.getInt(MAIN_STEP_COUNTER, 0));
+        databaseFitness.updateFitnessWalk(sharedPreferences.getInt(ID_KEY, 0), sharedPreferences.getString(MAIN_DATE_STEP, ""), sharedPreferences.getInt(MAIN_STEP_COUNTER, 0));
         sharedPreferences.edit().clear().commit();
+        SharedPreferences sharedPreferencesActivity = getActivity().getSharedPreferences(SHARED_PREFS_ACTIVITY, Context.MODE_PRIVATE);
+        sharedPreferencesActivity.edit().clear().commit();
         stopForegroundService();
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);

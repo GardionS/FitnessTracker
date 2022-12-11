@@ -18,8 +18,12 @@
         <service
             android:name=".ForegroundService"
             android:enabled="true"/>
+        <service android:name=".BoundService"
+            android:enabled="true"/>
         <activity android:name=".SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            android:noHistory="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,13 +48,17 @@
         <activity android:name=".MainScreen"
             android:exported="false"
             />
+        <receiver android:name=".UpdateDatabase"
+            />
         <activity android:name=".LoginActivity"
             android:exported="false"/>
         <activity android:name=".RegisterActivity"
             android:exported="false"/>
         <activity android:name=".EditProfileFragment"
-            android:exported="false"/>
+            android:parentActivityName=".MainScreen"
+            tools:ignore="ExtraText" />
         <activity android:name=".ChangePasswordActivity"
+            android:parentActivityName=".MainScreen"
             android:exported="false"/>
     </application>
 

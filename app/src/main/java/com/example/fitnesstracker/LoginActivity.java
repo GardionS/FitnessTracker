@@ -1,5 +1,9 @@
 package com.example.fitnesstracker;
 
+import static com.example.fitnesstracker.MainScreen.MAIN_DAILY_QUEST;
+import static com.example.fitnesstracker.MainScreen.MAIN_DATE_STEP;
+import static com.example.fitnesstracker.MainScreen.MAIN_STEP_COUNTER;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -16,12 +20,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private final AppCompatActivity activity = LoginActivity.this;
 
-    public static final String SHARED_PREFS = "shared_prefs_user";
+    public static final String SHARED_PREFS = "shared_prefs";
     public static final String EMAIL_KEY = "email_key";
-//    public static final String PASSWORD_KEY = "password_key";
     public static final String USERNAME_KEY = "username_key";
     public static final String EXP_KEY = "exp_key";
     public static final String AGE_KEY = "age_key";
@@ -42,10 +48,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.login_screen);
         initObjects();
         initVariable();
+        checkLogin();
         initListener();
-//        initButton();
-//        initGoToRegister();
+    }
 
+    private void checkLogin(){
+        if(!sharedPreferences.getString(EMAIL_KEY, "").equals("")){
+            goToMainScreen();
+        }
     }
     private void initObjects() {
         databaseUser = new DatabaseUser(activity);
@@ -59,25 +69,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }if (databaseUser.checkUser(emailEdit.getText().toString().trim()
                 , passwordEdit.getText().toString().trim())) {
-            User user = databaseUser.getUser(emailEdit.getText().toString().trim());
-            Intent accountsIntent = new Intent(activity, MainScreen.class);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(EMAIL_KEY, user.getEmail());
-            editor.putString(USERNAME_KEY, user.getUserName());
-            editor.putInt(AGE_KEY, user.getAge());
-            editor.putInt(WEIGHT_KEY, user.getWeight());
-            editor.putInt(EXP_KEY, user.getExp());
-            editor.putInt(ID_KEY, user.getId());
-
-            editor.apply();
-//            accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
-//            emptyEditText();
-
-            startActivity(accountsIntent);
+            initSharedPreferences(emailEdit.getText().toString().trim());
+            goToMainScreen();
         } else {
-            // Snack Bar to show success message that record is wrong
-//            Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.error_message_login),Toast.LENGTH_SHORT).show();
         }
+    }
+    private void goToMainScreen(){
+        Intent mainScreenIntent = new Intent(activity, MainScreen.class);
+        startActivity(mainScreenIntent);
+        finish();
+    }
+    private void initSharedPreferences(String email) {
+
+        User user = databaseUser.getUser(email);
+        DatabaseFitness databaseFitness = new DatabaseFitness(this);
+
+        Fitness fitness = databaseFitness.getFitness(user.getId(), new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(MAIN_STEP_COUNTER, fitness.getWalk());
+        editor.putString(MAIN_DATE_STEP, fitness.getDate());
+        editor.putString(EMAIL_KEY, user.getEmail());
+        editor.putString(USERNAME_KEY, user.getUserName());
+        editor.putInt(AGE_KEY, user.getAge());
+        editor.putInt(WEIGHT_KEY, user.getWeight());
+        editor.putInt(EXP_KEY, user.getExp());
+        editor.putInt(ID_KEY, user.getId());
+        editor.putBoolean(MAIN_DAILY_QUEST, user.getDailyQuest());
+        editor.apply();
     }
     @Override
     protected void onStart() {
@@ -96,37 +115,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         password = sharedPreferences.getString("PASSWORD_KEY", null);
         buttonLogin = (AppCompatButton) findViewById(R.id.loginButton);
         buttonGoToRegister = (AppCompatTextView) findViewById(R.id.goToRegister);
-
-        emailEdit.setText("asd@gmail.com");
-        passwordEdit.setText("asdasd");
     }
 
     private void initListener() {
         buttonLogin.setOnClickListener(this);
         buttonGoToRegister.setOnClickListener(this);
-    }
-    private void initButton(){
-
-        Button login = findViewById(R.id.loginButton);
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(emailEdit.getText().toString()) && TextUtils.isEmpty(passwordEdit.getText().toString())) {
-                    Toast.makeText(LoginActivity.this, "Please enter Email and Password", Toast.LENGTH_SHORT).show();
-                } else {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString(EMAIL_KEY, emailEdit.getText().toString());
-//                    editor.putString(PASSWORD_KEY, passwordEdit.getText().toString());
-//                    editor.putString(USERNAME_KEY, )
-                    editor.apply();
-//                    Intent intent = new Intent(LoginActivity.this, MainScreen.class);
-//                    startActivity(intent);
-                    Intent intent = new Intent(LoginActivity.this, ForegroundService.class);
-                    startActivity(intent);
-
-                }
-            }
-        });
     }
 
     private void emptyEditText() {
@@ -141,10 +134,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 verifyDataSQL();
                 break;
             case R.id.goToRegister:
-                // Navigate to RegisterActivity
-                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
-                startActivity(intent);
-                finish();
+                goToRegister();
         }
+    }
+    private void goToRegister() {
+        Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+        startActivity(intent);
     }
 }
