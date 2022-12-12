@@ -1,19 +1,22 @@
-package com.gmail.gardion01.fitnesstracker.controller.fragment;
+package com.gmail.gardion01.fitnesstracker.controller.activity;
 
 import static com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity.ID_KEY;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fitnesstracker.R;
-import com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity;
 import com.gmail.gardion01.fitnesstracker.database.DatabaseUser;
 import com.gmail.gardion01.fitnesstracker.utility.ValidateText;
 
@@ -27,7 +30,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_change_password);
+        setContentView(R.layout.change_password);
         initVariable();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

@@ -9,7 +9,9 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -35,16 +37,23 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        model = new ViewModelProvider(this).get(HomeFragmentViewModel.class);
-        Intent intent = new Intent(getContext(), BoundService.class);
-        getActivity().startService(intent); //Start the service
-        getActivity().bindService(intent, model.getServiceConnection(), Context.BIND_AUTO_CREATE);
-        model.startGettingStepData(); //Start live data
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        model = new ViewModelProvider(this).get(HomeFragmentViewModel.class);
+        Intent intent = new Intent(getContext(), BoundService.class);
+        getActivity().startService(intent); //Start the service
+        getActivity().bindService(intent, model.getServiceConnection(), Context.BIND_AUTO_CREATE);
+        model.startGettingStepData(); //Start live data
     }
 
     @Override
@@ -82,7 +91,7 @@ public class HomeFragment extends Fragment {
                         if (model.getBinder().getValue() != null) {
                             if (model.getStepData() != null) {
                                 steps.setText(model.getStepData().getValue() + " steps"); //Update the step data
-                                dailyQuestProgress.setText(model.getStepData().getValue() + "/" + sharedPreferences.getInt(MAIN_DAILY_QUEST_TARGET, 0)+" steps"); //Update the quest data
+                                dailyQuestProgress.setText(model.getStepData().getValue() + "/" + sharedPreferences.getInt(MAIN_DAILY_QUEST_TARGET, 0) + " steps"); //Update the quest data
                             }
                             handler.postDelayed(this, 500); //reset every step 1000ms
                         } else {

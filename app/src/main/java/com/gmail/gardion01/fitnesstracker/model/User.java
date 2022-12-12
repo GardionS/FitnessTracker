@@ -1,4 +1,4 @@
-package com.example.fitnesstracker;
+package com.gmail.gardion01.fitnesstracker.model;
 
 public class User {
     private int id;
@@ -7,8 +7,6 @@ public class User {
     private String password;
     private int weight;
     private int age;
-<<<<<<< Updated upstream:app/src/main/java/com/example/fitnesstracker/User.java
-=======
     private int exp;
 
     public User(int id, String userName, String email, int weight, int age, int exp) {
@@ -22,8 +20,6 @@ public class User {
 
     public User() {
     }
->>>>>>> Stashed changes:app/src/main/java/com/gmail/gardion01/fitnesstracker/model/User.java
-
     public int getId() {
         return id;
     }
@@ -75,11 +71,8 @@ public class User {
     public int getExp() {
         return exp;
     }
-<<<<<<< Updated upstream:app/src/main/java/com/example/fitnesstracker/User.java
-=======
 
     public void setExp(int exp) {
         this.exp = exp;
     }
->>>>>>> Stashed changes:app/src/main/java/com/gmail/gardion01/fitnesstracker/model/User.java
 }

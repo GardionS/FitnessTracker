@@ -1,4 +1,4 @@
-package com.gmail.gardion01.fitnesstracker.controller.fragment;
+package com.gmail.gardion01.fitnesstracker.controller.activity;
 
 import static com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity.AGE_KEY;
 import static com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity.EMAIL_KEY;
@@ -18,12 +18,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fitnesstracker.R;
-import com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity;
-import com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity;
 import com.gmail.gardion01.fitnesstracker.database.DatabaseUser;
 import com.gmail.gardion01.fitnesstracker.utility.ValidateText;
 
-public class EditProfileFragment extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity {
     private EditText editUsername, editEmail, editWeight, editAge;
     private SharedPreferences sharedPreferences;
     private Button editProfile;
@@ -33,7 +31,7 @@ public class EditProfileFragment extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_profile_edit);
+        setContentView(R.layout.profile_edit);
         initVariable();
         initValue();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

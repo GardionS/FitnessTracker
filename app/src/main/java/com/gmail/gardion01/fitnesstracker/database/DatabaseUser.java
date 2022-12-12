@@ -52,7 +52,12 @@ public class DatabaseUser extends DatabaseMain {
 
         User user = new User();
         if (cursor.moveToFirst()) {
-            user = new User(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ID))), cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)), cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)), Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_WEIGHT))), Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_AGE))), Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EXP))));
+            user = new User(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ID))),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)),
+                    Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_WEIGHT))),
+                    Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_AGE))),
+                    Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EXP))));
         }
         cursor.close();
         db.close();

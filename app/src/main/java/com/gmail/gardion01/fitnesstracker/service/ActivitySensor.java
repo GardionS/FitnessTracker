@@ -25,6 +25,27 @@ import com.gmail.gardion01.fitnesstracker.database.DatabaseFitness;
 import com.gmail.gardion01.fitnesstracker.database.DatabaseMain;
 import com.gmail.gardion01.fitnesstracker.database.DatabaseQuest;
 import com.gmail.gardion01.fitnesstracker.database.DatabaseUser;
+import com.gmail.gardion01.fitnesstracker.enumeration.QuestType;
+import com.gmail.gardion01.fitnesstracker.service.ForegroundService;
+import com.gmail.gardion01.fitnesstracker.service.UpdateDatabaseReceiver;
+
+import java.util.HashMap;
+
+public class ActivitySensor implements SensorEventListener {
+    private final int MINUTE = 60 * 60;
+    private final Context context;
+    private SensorManager sensorManager;
+    private SharedPreferences sharedPreferences;
+    private Sensor stepSensor;
+    private int stepCount;
+    private DatabaseFitness databaseFitness;
+    private DatabaseUser databaseUser;
+    private AlarmManager alarmManager;
+    private HashMap<Integer, Boolean> questList; //If there is multiple quest
+
+    public ActivitySensor(Context context) {
+        this.context = context;
+        initVariable();
     }
     public void initVariable() { //Initialize all variable
         questList = new HashMap<>();
