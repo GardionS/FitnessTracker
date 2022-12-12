@@ -54,10 +54,7 @@ public class SplashActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, ACTIVITY_PERMISSION); //App request permission
             }
         }  else { //Run the app if the app already has permission
-            DatabaseMain databaseMain = new DatabaseMain(this);
-            if(databaseMain.checkVersion()) {
-                databaseMain.initDatabase();
-            }
+
             handler = new Handler();
             handler.postDelayed(new Runnable() { //Use splash activity for a better UX
                 @Override
@@ -75,8 +72,6 @@ public class SplashActivity extends AppCompatActivity {
         if (requestCode == ACTIVITY_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT);
-                DatabaseMain databaseMain = new DatabaseMain(this);
-                databaseMain.checkVersion();
                 handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override

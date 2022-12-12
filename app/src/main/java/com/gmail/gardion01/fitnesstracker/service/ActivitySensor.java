@@ -88,7 +88,6 @@ public class ActivitySensor implements SensorEventListener {
             databaseFitness.updateFitness(sharedPreferences.getInt(ID_KEY, 0), WALKING.getValue(), sharedPreferences.getString(HomeActivity.MAIN_DATE_STEP, ""), sharedPreferences.getInt(HomeActivity.MAIN_STEP_COUNTER, 0));
             if (currentStep > sharedPreferences.getInt(HomeActivity.MAIN_LAST_STEP_COUNTER, 0)) { //Phone not reboot
                 stepCount = currentStep - sharedPreferences.getInt(HomeActivity.MAIN_LAST_STEP_COUNTER, 0);
-                editor.putInt(HomeActivity.MAIN_LAST_STEP_COUNTER, currentStep);
                 editor.putInt(HomeActivity.MAIN_STEP_COUNTER, stepCount);
             } else { //phone has reboot
                 stepCount = currentStep;
@@ -102,7 +101,7 @@ public class ActivitySensor implements SensorEventListener {
     }
 
     private void checkMission() { //Check if the mission is complete
-        if (questList.get(DAILY_QUEST.getValue()) && sharedPreferences.getInt(HomeActivity.MAIN_STEP_COUNTER, 0) > sharedPreferences.getInt(MAIN_DAILY_QUEST_TARGET, 6000)) { //Fast checker by using hashmap whether the task is completed
+        if (!questList.get(DAILY_QUEST.getValue()) && sharedPreferences.getInt(HomeActivity.MAIN_STEP_COUNTER, 0) > sharedPreferences.getInt(MAIN_DAILY_QUEST_TARGET, 6000)) { //Fast checker by using hashmap whether the task is completed
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(HomeActivity.MAIN_DAILY_QUEST, true);
             editor.putInt(EXP_KEY, sharedPreferences.getInt(EXP_KEY, 0) + 200);
@@ -132,7 +131,7 @@ public class ActivitySensor implements SensorEventListener {
     }
     public void destroyAlarm() { //Destroy the alarm
         Intent intent = new Intent(context, UpdateDatabaseReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 12, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 13, intent, PendingIntent.FLAG_IMMUTABLE);
         alarmManager.cancel(pendingIntent);
     }
 }

@@ -110,7 +110,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor.putInt(WEIGHT_KEY, user.getWeight());
         editor.putInt(EXP_KEY, user.getExp());
         editor.putInt(ID_KEY, user.getId());
-
         DatabaseQuestType databaseQuestType = new DatabaseQuestType(this);
         QuestType questType = databaseQuestType.getQuestType(DAILY_QUEST.getValue());
         editor.putInt(MAIN_DAILY_QUEST_TARGET, questType.getQuestTargetValue());

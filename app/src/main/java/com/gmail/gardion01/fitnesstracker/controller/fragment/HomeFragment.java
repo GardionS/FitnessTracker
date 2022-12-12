@@ -131,7 +131,7 @@ public class HomeFragment extends Fragment {
     private void initUser() { //Initialize user
         username.setText(sharedPreferences.getString(LoginActivity.USERNAME_KEY, ""));
         int exp = sharedPreferences.getInt(LoginActivity.EXP_KEY, 0);
-        lvl.setText(Integer.toString(Math.floorDiv(exp, 1000))); //Each level needs 1000xp
+        lvl.setText("Lv. " + Integer.toString(Math.floorDiv(exp, 1000))); //Each level needs 1000xp
         if (sharedPreferences.getBoolean(HomeActivity.MAIN_DAILY_QUEST, false)) { //The exp number will be strikethrough indicating already complete
             dailyQuestExp.setPaintFlags(dailyQuestExp.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else {

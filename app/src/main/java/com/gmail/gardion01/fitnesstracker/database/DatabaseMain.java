@@ -10,11 +10,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.gmail.gardion01.fitnesstracker.model.QuestType;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DatabaseMain extends SQLiteOpenHelper {//
-    public static final int DATABASE_VERSION = 11;
+    public static final int DATABASE_VERSION = 13;
     public static final String DATABASE_NAME = "FitnessTracker.db";
     private Context context;
     public DatabaseMain(@Nullable Context context) {
@@ -45,6 +47,7 @@ public class DatabaseMain extends SQLiteOpenHelper {//
         db.execSQL(DatabaseUser.DROP_USER_TABLE);
         db.execSQL(DatabaseQuestType.DROP_QUEST_TYPE_TABLE);
         db.execSQL(DatabaseFitnessType.DROP_FITNESS_TYPE_TABLE);
+        db.execSQL(DatabaseQuest.DROP_QUEST_TABLE);
         onCreate(db);
     }
 
@@ -55,12 +58,11 @@ public class DatabaseMain extends SQLiteOpenHelper {//
         databaseFitnessType.addFitnessType(WALKING.getValue(), WALKING.name(), 6000);
         databaseFitnessType.addFitnessType(RUNNING.getValue(), RUNNING.name(), 2000);
     }
-    public boolean checkVersion(){
-        SQLiteDatabase db = getWritableDatabase();
-        if(db.getVersion() != DATABASE_VERSION) {
-            onUpgrade(db, db.getVersion(), DATABASE_VERSION);
-            return true;
+    public void checkDatabase() {
+        DatabaseQuestType databaseQuestType = new DatabaseQuestType(context);
+        QuestType questType = databaseQuestType.getQuestType(DAILY_QUEST.getValue());
+        if(questType.getQuestName()==null) { //Since value is null there is no data
+            initDatabase();
         }
-        return false;
     }
 }

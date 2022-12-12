@@ -13,6 +13,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.example.fitnesstracker.R;
+import com.gmail.gardion01.fitnesstracker.database.DatabaseMain;
 import com.gmail.gardion01.fitnesstracker.database.DatabaseUser;
 import com.gmail.gardion01.fitnesstracker.model.User;
 import com.gmail.gardion01.fitnesstracker.utility.ValidateText;
@@ -86,6 +87,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             user.setWeight(Integer.parseInt(weightEditText.getText().toString()));
             databaseUser.addUser(user); //Add user data to database
             emptyEditText();
+
+            DatabaseMain databaseMain = new DatabaseMain(this);
+            databaseMain.checkDatabase();
             goToLogin();//After the user is added then the screen redirect to the login
         } else {
             Toast.makeText(this, getString(R.string.error_message_regiter), Toast.LENGTH_SHORT);

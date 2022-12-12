@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue_200">#5b39c6</color>
     <color name="navigation_background">#FFFFFFFF</color>
+    <color name="line">#FFFFFFFF</color>
 </resources>

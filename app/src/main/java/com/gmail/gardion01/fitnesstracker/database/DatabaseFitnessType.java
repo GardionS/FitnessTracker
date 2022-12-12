@@ -54,7 +54,7 @@ public class DatabaseFitnessType extends DatabaseMain{
 
         if (cursor.moveToFirst()) { //Check if there is data
             fitnessType.setName(cursor.getString(cursor.getColumnIndex(COLUMN_FITNESS_NAME)));
-            fitnessType.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_FITNESS_TARGET_VALUE))));
+            fitnessType.setTargetValue(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_FITNESS_TARGET_VALUE))));
         }
         cursor.close();
         db.close();
