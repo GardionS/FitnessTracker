@@ -1,18 +1,17 @@
-package com.example.fitnesstracker;
+package com.gmail.gardion01.fitnesstracker.service;
 
-import static com.example.fitnesstracker.MainScreen.MAIN_DATE_STEP;
-import static com.example.fitnesstracker.MainScreen.MAIN_STEP_COUNTER;
+import static com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity.MAIN_DATE_STEP;
+import static com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity.MAIN_STEP_COUNTER;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity;
+import com.gmail.gardion01.fitnesstracker.database.DatabaseFitness;
 
-public class UpdateDatabase extends BroadcastReceiver {
+public class UpdateDatabaseReceiver extends BroadcastReceiver {
     private DatabaseFitness databaseFitness;
     private SharedPreferences sharedPreferences;
     private Context context;
@@ -25,11 +24,10 @@ public class UpdateDatabase extends BroadcastReceiver {
         databaseFitness.updateFitnessWalk(sharedPreferences.getInt(LoginActivity.ID_KEY,0), sharedPreferences.getString(MAIN_DATE_STEP, ""), sharedPreferences.getInt(MAIN_STEP_COUNTER, 0));
     }
 
-
     @Override
     public void onReceive(Context context, Intent intent) {
         this.context = context;
         initVariable();
-        updateDatabase();
+        updateDatabase(); //Update database for the step
     }
 }

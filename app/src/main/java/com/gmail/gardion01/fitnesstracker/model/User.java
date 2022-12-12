@@ -1,4 +1,4 @@
-package com.example.fitnesstracker;
+package com.gmail.gardion01.fitnesstracker.model;
 
 public class User {
     private int id;
@@ -8,7 +8,7 @@ public class User {
     private int weight;
     private int age;
     private int exp;
-    private boolean dailyQuest;
+    private boolean dailyQuest;//Since there only daily quest
 
     public User(int id, String userName, String email, int weight, int age, int exp, boolean dailyQuest) {
         this.id = id;

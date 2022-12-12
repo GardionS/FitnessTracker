@@ -16,11 +16,11 @@
         android:theme="@style/Theme.FitnessTracker"
         tools:targetApi="31">
         <service
-            android:name=".ForegroundService"
+            android:name="com.gmail.gardion01.fitnesstracker.service.ForegroundService"
             android:enabled="true"/>
-        <service android:name=".BoundService"
+        <service android:name="com.gmail.gardion01.fitnesstracker.service.BoundService"
             android:enabled="true"/>
-        <activity android:name=".SplashActivity"
+        <activity android:name="com.gmail.gardion01.fitnesstracker.controller.activity.SplashActivity"
             android:exported="true"
             android:noHistory="true">
 
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.gmail.gardion01.fitnesstracker.controller.activity.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.FitnessTracker.NoActionBar">
@@ -45,20 +45,20 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".MainScreen"
+        <activity android:name="com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity"
             android:exported="false"
             />
-        <receiver android:name=".UpdateDatabase"
+        <receiver android:name="com.gmail.gardion01.fitnesstracker.controller.UpdateDatabase"
             />
-        <activity android:name=".LoginActivity"
+        <activity android:name="com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity"
             android:exported="false"/>
-        <activity android:name=".RegisterActivity"
+        <activity android:name="com.gmail.gardion01.fitnesstracker.controller.activity.RegisterActivity"
             android:exported="false"/>
-        <activity android:name=".EditProfileFragment"
-            android:parentActivityName=".MainScreen"
+        <activity android:name="com.gmail.gardion01.fitnesstracker.controller.fragment.EditProfileFragment"
+            android:parentActivityName="com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity"
             tools:ignore="ExtraText" />
-        <activity android:name=".ChangePasswordActivity"
-            android:parentActivityName=".MainScreen"
+        <activity android:name="com.gmail.gardion01.fitnesstracker.controller.fragment.ChangePasswordActivity"
+            android:parentActivityName="com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity"
             android:exported="false"/>
     </application>
 

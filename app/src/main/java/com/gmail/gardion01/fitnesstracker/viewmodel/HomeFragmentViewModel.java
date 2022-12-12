@@ -1,6 +1,4 @@
-package com.example.fitnesstracker;
-
-import static com.example.fitnesstracker.MainScreen.MAIN_STEP_COUNTER;
+package com.gmail.gardion01.fitnesstracker.viewmodel;
 
 import android.app.Application;
 import android.content.ComponentName;
@@ -13,6 +11,10 @@ import android.os.IBinder;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
+
+import com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity;
+import com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity;
+import com.gmail.gardion01.fitnesstracker.service.BoundService;
 
 public class HomeFragmentViewModel extends AndroidViewModel {
     private final SharedPreferences sharedPreferences;
@@ -50,7 +52,7 @@ public class HomeFragmentViewModel extends AndroidViewModel {
         return serviceConnection;
     }
 
-    public void startGettingStepData() {
+    public void startGettingStepData() { //get step data
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -70,6 +72,6 @@ public class HomeFragmentViewModel extends AndroidViewModel {
     }
 
     public void setStepData() {
-        mStepData.setValue(sharedPreferences.getInt(MAIN_STEP_COUNTER, 0));
+        mStepData.setValue(sharedPreferences.getInt(HomeActivity.MAIN_STEP_COUNTER, 0));
     }
 }

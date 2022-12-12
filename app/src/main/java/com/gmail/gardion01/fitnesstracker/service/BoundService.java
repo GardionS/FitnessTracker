@@ -1,6 +1,4 @@
-package com.example.fitnesstracker;
-
-import static com.example.fitnesstracker.MainScreen.MAIN_STEP_COUNTER;
+package com.gmail.gardion01.fitnesstracker.service;
 
 import android.app.Service;
 import android.content.Context;
@@ -12,29 +10,17 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
+import com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity;
+import com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity;
+
 public class BoundService extends Service {
     private IBinder iBinder = new LocalBinder();
-    private Handler handler;
-    private int stepCount;
     private SharedPreferences sharedPreferences;
 
     @Override
     public void onCreate() {
-        handler = new Handler();
         sharedPreferences = getSharedPreferences(LoginActivity.SHARED_PREFS, Context.MODE_PRIVATE);
-        stepCount = 0;
         super.onCreate();
-    }
-
-    public void updateCounter() {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                stepCount = sharedPreferences.getInt(MAIN_STEP_COUNTER, 0);
-                handler.postDelayed(this, 500);
-            }
-
-        };
     }
 
     @Nullable
@@ -42,8 +28,9 @@ public class BoundService extends Service {
     public IBinder onBind(Intent intent) {
         return iBinder;
     }
-    public class LocalBinder extends Binder {
-        BoundService getService() {
+
+    public class LocalBinder extends Binder { //Local binder to receive the current local service
+        public BoundService getService() {
             return BoundService.this;
         }
     }
@@ -51,6 +38,6 @@ public class BoundService extends Service {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
-        stopSelf();
+        stopSelf(); //Stop the current service
     }
 }

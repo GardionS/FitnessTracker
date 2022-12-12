@@ -1,19 +1,21 @@
-package com.example.fitnesstracker;
+package com.gmail.gardion01.fitnesstracker.controller.fragment;
 
-import static com.example.fitnesstracker.LoginActivity.ID_KEY;
+import static com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity.ID_KEY;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.fitnesstracker.R;
+import com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity;
+import com.gmail.gardion01.fitnesstracker.database.DatabaseUser;
+import com.gmail.gardion01.fitnesstracker.utility.ValidateText;
 
 public class ChangePasswordActivity extends AppCompatActivity {
     EditText passwordOld, passwordNew;
@@ -21,6 +23,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     ValidateText validateText;
     DatabaseUser databaseUser;
     SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +31,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
         initVariable();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-    private void initVariable() {
+
+    private void initVariable() { //Initialize all variable
         sharedPreferences = getSharedPreferences(LoginActivity.SHARED_PREFS, Context.MODE_PRIVATE);
         databaseUser = new DatabaseUser(this);
         validateText = new ValidateText(this);
@@ -42,15 +46,15 @@ public class ChangePasswordActivity extends AppCompatActivity {
             }
         });
     }
-    private void  checkPassword() {
-        if(validateText.validateEditText(passwordOld, getString(R.string.error_message_password_old))
-        && validateText.validateEditText(passwordNew, getString(R.string.error_message_password_new))) {
-            if(databaseUser.comparePassword(sharedPreferences.getInt(ID_KEY, 0), passwordOld.getText().toString())) {
-                databaseUser.insertNewPassword(sharedPreferences.getInt(ID_KEY, 0), passwordNew.getText().toString());
+
+    private void checkPassword() { //Check if password same
+        if (validateText.validateEditText(passwordOld, getString(R.string.error_message_password_old)) && validateText.validateEditText(passwordNew, getString(R.string.error_message_password_new))) {
+            if (databaseUser.comparePassword(sharedPreferences.getInt(ID_KEY, 0), passwordOld.getText().toString())) {
+                databaseUser.insertNewPassword(sharedPreferences.getInt(ID_KEY, 0), passwordNew.getText().toString()); //Update password in database
                 finish();
             }
         }
     }
 
-    
+
 }

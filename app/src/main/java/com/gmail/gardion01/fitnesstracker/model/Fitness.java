@@ -1,4 +1,4 @@
-package com.example.fitnesstracker;
+package com.gmail.gardion01.fitnesstracker.model;
 
 public class Fitness {
     private int id;

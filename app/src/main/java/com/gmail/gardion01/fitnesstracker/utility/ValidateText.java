@@ -1,4 +1,4 @@
-package com.example.fitnesstracker;
+package com.gmail.gardion01.fitnesstracker.utility;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,26 +16,21 @@ public class ValidateText {
         this.context = context;
     }
 
-    public boolean validateEditText(EditText editText, String errorMessage) {
+    public boolean validateEditText(EditText editText, String errorMessage) { //Check edittext
         String text = editText.getText().toString().trim();
-        if (TextUtils.isEmpty(text)) {
+        if (TextUtils.isEmpty(text)) { //Check edittext if empty
             editText.setError(errorMessage);
             return false;
         }
         return true;
     }
 
-    public boolean validateEmailEditText(EditText emailEditText, String errorMessage) {
+    public boolean validateEmailEditText(EditText emailEditText, String errorMessage) { //Check valid email edit text
         CharSequence email = emailEditText.getText().toString();
-        if (TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) { //Check if the input is email
             emailEditText.setError(errorMessage);
             return false;
         }
         return true;
-    }
-
-    public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 }

@@ -1,13 +1,9 @@
-package com.example.fitnesstracker;
-
-import static com.example.fitnesstracker.MainScreen.MAIN_STEP_COUNTER;
+package com.gmail.gardion01.fitnesstracker.controller.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -16,6 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+
+import com.example.fitnesstracker.R;
+import com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity;
+import com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity;
+import com.gmail.gardion01.fitnesstracker.database.DatabaseFitness;
+import com.gmail.gardion01.fitnesstracker.model.Fitness;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,7 +40,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         initListener();
     }
 
-    private void initVariable() {
+    private void initVariable() { //Initialize all variable
         historyWalkingBar = getView().findViewById(R.id.historyWalkingBar);
         historyPreviousDay = getView().findViewById(R.id.historyPreviousDay);
         historyNextDay = getView().findViewById(R.id.historyNextDay);
@@ -48,13 +50,13 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         date = new Date();
     }
 
-    private void initValue() {
+    private void initValue() { //Initialize all value
         Fitness fitnessToday = new Fitness();
-        fitnessToday.setWalk(sharedPreferences.getInt(MAIN_STEP_COUNTER, 0));
+        fitnessToday.setWalk(sharedPreferences.getInt(HomeActivity.MAIN_STEP_COUNTER, 0));
         setFitnessValue(fitnessToday);
     }
 
-    private int convertStepsToCalorie(int steps) {
+    private int convertStepsToCalorie(int steps) { //Convert steps to calories
         return (int) Math.round(steps * 0.4);
     }
 
@@ -69,7 +71,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         setFitnessValue(fitness);
     }
 
-    private void setFitnessValue(Fitness fitness) {
+    private void setFitnessValue(Fitness fitness) { //Initialize all the fitness value
         SimpleDateFormat format = new SimpleDateFormat("E, MMM dd yyyy");
         historyDate.setText(format.format(date));
         historyStepsWalking.setText(fitness.getWalk() + " steps");
@@ -77,7 +79,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         historyWalkingBar.setProgress((int) Math.round(fitness.getWalk()));
     }
 
-    private void initListener() {
+    private void initListener() { //Initialize all listener
         historyPreviousDay.setOnClickListener(this);
         historyNextDay.setOnClickListener(this);
     }
@@ -90,7 +92,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View view) { //Select which button is pressed
         switch (view.getId()) {
             case (R.id.historyPreviousDay):
                 getFitness(false);

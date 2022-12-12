@@ -1,4 +1,4 @@
-package com.example.fitnesstracker;
+package com.gmail.gardion01.fitnesstracker.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DatabaseMain extends SQLiteOpenHelper {
+public class DatabaseMain extends SQLiteOpenHelper {//
     public static final int DATABASE_VERSION = 10;
     public static final String DATABASE_NAME = "FitnessTracker.db";
 
@@ -27,7 +27,6 @@ public class DatabaseMain extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DatabaseUser.CREATE_USER_TABLE);
         db.execSQL(DatabaseFitness.CREATE_FITNESS_TABLE);
-
     }
 
     @Override

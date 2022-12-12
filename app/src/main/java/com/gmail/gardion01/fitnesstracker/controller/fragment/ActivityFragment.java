@@ -1,16 +1,12 @@
-package com.example.fitnesstracker;
+package com.gmail.gardion01.fitnesstracker.controller.fragment;
 
-import static com.example.fitnesstracker.LoginActivity.ID_KEY;
-import static com.example.fitnesstracker.MainScreen.MAIN_STEP_COUNTER;
+import static com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity.MAIN_STEP_COUNTER;
+import static com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity.ID_KEY;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -18,32 +14,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.example.fitnesstracker.R;
+import com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity;
+import com.gmail.gardion01.fitnesstracker.database.DatabaseFitness;
+import com.gmail.gardion01.fitnesstracker.database.DatabaseMain;
+import com.gmail.gardion01.fitnesstracker.model.Fitness;
 
 public class ActivityFragment extends Fragment implements View.OnClickListener {
 
     public static final String SHARED_PREFS_ACTIVITY = "shared_prefs_activity";
     public static final String ACTIVITY_PREVIOUS_STEP_KEY = "activity_step_key";
     public static final String ACTIVITY_RUNNING_KEY = "activity_running_key";
+
     private SharedPreferences sharedPreferencesUser, sharedPreferencesActivity;
     private ImageButton activityPlayJogging;
     private TextView activityStepCounter, activityCalorie;
     private DatabaseFitness databaseFitness;
     private boolean running;
 
-    public ActivityFragment(DatabaseFitness databaseFitness) {
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_activity, container, false);
+    public ActivityFragment() {
     }
 
     @Override
@@ -66,52 +55,45 @@ public class ActivityFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case (R.id.activityPlayJogging):
+                SharedPreferences.Editor editor = sharedPreferencesActivity.edit();
                 if (running) { //Deactivate
                     running = false;
                     activityPlayJogging.setImageResource(R.drawable.ic_baseline_play_arrow_24);
-                    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-                    Date date = new Date();
                     int diffSteps = sharedPreferencesUser.getInt(MAIN_STEP_COUNTER, 0) - sharedPreferencesActivity.getInt(ACTIVITY_PREVIOUS_STEP_KEY, 0);
-                    int previousRunning = databaseFitness.getRunning(sharedPreferencesUser.getInt(ID_KEY, 0), format.format(date));
-                    databaseFitness.updateFitnessRunning(sharedPreferencesUser.getInt(ID_KEY, 0), format.format(date), previousRunning + diffSteps);
-                    SharedPreferences.Editor editor = sharedPreferencesActivity.edit();
+                    int previousRunning = databaseFitness.getRunning(sharedPreferencesUser.getInt(ID_KEY, 0), DatabaseMain.getCurrentDate("dd-MM-yyyy"));
+                    databaseFitness.updateFitnessRunning(sharedPreferencesUser.getInt(ID_KEY, 0), DatabaseMain.getCurrentDate("dd-MM-yyyy"), previousRunning + diffSteps); //Update database on running
                     editor.putInt(ACTIVITY_PREVIOUS_STEP_KEY, 0);
                     editor.putBoolean(ACTIVITY_RUNNING_KEY, false);
                 } else {
                     running = true;
-
                     activityPlayJogging.setImageResource(R.drawable.ic_baseline_pause_24);
-                    int previousStep = databaseFitness.getRunning(sharedPreferencesUser.getInt(ID_KEY, 0),
-                            new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-                    SharedPreferences.Editor editor = sharedPreferencesActivity.edit();
-                    editor.putInt(ACTIVITY_PREVIOUS_STEP_KEY, previousStep);
+                    int previousStep = databaseFitness.getRunning(sharedPreferencesUser.getInt(ID_KEY, 0), DatabaseMain.getCurrentDate("dd-MM-yyyy"));
+                    editor.putInt(ACTIVITY_PREVIOUS_STEP_KEY, previousStep); //Store current step count for running
                     editor.putBoolean(ACTIVITY_RUNNING_KEY, true);
-                    editor.apply();
                 }
+                editor.apply();
                 break;
         }
     }
 
-    private void initVariable() {
-        running = false;
+    private void initVariable() { //Initialize all variable
+        running = sharedPreferencesActivity.getBoolean(ACTIVITY_RUNNING_KEY, false);
         activityPlayJogging = getView().findViewById(R.id.activityPlayJogging);
         activityStepCounter = getView().findViewById(R.id.activityStepCounter);
         activityCalorie = getView().findViewById(R.id.activityCalorie);
     }
 
-    private void initValue() {
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = new Date();
-        Fitness fitness = databaseFitness.getFitness(sharedPreferencesUser.getInt(ID_KEY, 0), format.format(date));
+    private void initValue() { //Initialize all value
+        Fitness fitness = databaseFitness.getFitness(sharedPreferencesUser.getInt(ID_KEY, 0), DatabaseMain.getCurrentDate("dd-MM-yyyy"));
         activityStepCounter.setText(fitness.getRunning() + "/6000 steps");
         activityCalorie.setText(convertToCalorie(fitness.getRunning()) + " cal");
     }
 
-    private void initListener() {
+    private void initListener() { //Initialize all listener
         activityPlayJogging.setOnClickListener(this);
     }
 
-    private int convertToCalorie(int value) {
+    private int convertToCalorie(int value) { //Convert steps to calories
         return (int) Math.round(value * 0.4);
     }
 

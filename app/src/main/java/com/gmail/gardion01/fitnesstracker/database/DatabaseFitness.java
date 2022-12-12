@@ -1,4 +1,4 @@
-package com.example.fitnesstracker;
+package com.gmail.gardion01.fitnesstracker.database;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -6,8 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.gmail.gardion01.fitnesstracker.model.Fitness;
 
 public class DatabaseFitness extends DatabaseMain {
 
@@ -35,9 +34,7 @@ public class DatabaseFitness extends DatabaseMain {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_ID, userId);
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = new Date();
-        values.put(COLUMN_DATE, format.format(date));
+        values.put(COLUMN_DATE, DatabaseMain.getCurrentDate("dd-MM-yyyy"));
         values.put(COLUMN_WALK, 0);
         values.put(COLUMN_RUNNING, 0);
         db.insert(TABLE_FITNESS, null, values);
@@ -52,7 +49,6 @@ public class DatabaseFitness extends DatabaseMain {
         values.put(COLUMN_DATE, date);
         values.put(COLUMN_WALK, 0);
         db.insert(TABLE_FITNESS, null, values);
-//        dbWritable.close();
         db.close();
     }
 
@@ -75,14 +71,12 @@ public class DatabaseFitness extends DatabaseMain {
                 null,
                 null);
         Fitness fitness = new Fitness(userId, date);
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-        Date dateToday = new Date();
 
         if (cursor.moveToFirst()) { //Check if there is data
             fitness.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_FITNESS_ID))));
             fitness.setWalk(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_WALK))));
             fitness.setRunning(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_RUNNING))));
-        } else if (date.equals(format.format(dateToday))) { //There is no data in db for today, so create new record
+        } else if (date.equals(DatabaseMain.getCurrentDate("dd-MM-yyyy"))) { //There is no data in db for today, so create new record
             addFitness(userId);
             fitness.setWalk(0);
             fitness.setRunning(0);
@@ -120,9 +114,6 @@ public class DatabaseFitness extends DatabaseMain {
                 null,
                 null,
                 null);
-        Fitness fitness = new Fitness(userId, date);
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-        Date dateToday = new Date();
         int walking = 0;
         if (cursor.moveToFirst()) {
             walking = cursor.getInt(cursor.getColumnIndex(COLUMN_RUNNING));

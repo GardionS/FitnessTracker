@@ -1,7 +1,6 @@
-package com.example.fitnesstracker;
+package com.gmail.gardion01.fitnesstracker.controller.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,33 +15,34 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.fitnesstracker.R;
+
 
 public class SplashActivity extends AppCompatActivity {
     private Handler handler;
     private int ACTIVITY_PERMISSION = 1;
-    private int FOREGROUND_PERMISSION = 2;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
         checkPermissionActivity();
-//        checkPermissionForeground();
     }
-    private void checkPermissionActivity()  {
+    private void checkPermissionActivity()  { //Check the activity permission
         if (ContextCompat.checkSelfPermission(
                 getApplicationContext(), Manifest.permission.ACTIVITY_RECOGNITION) !=
-                PackageManager.PERMISSION_GRANTED) {
+                PackageManager.PERMISSION_GRANTED) { //Check whether the permission granted or not
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACTIVITY_RECOGNITION)) {
                 new AlertDialog.Builder(this)
                         .setTitle("Permission Needed")
                         .setMessage("Permission Needed")
-                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() { //Show user the OK to request permission
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, ACTIVITY_PERMISSION);
+                                ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, ACTIVITY_PERMISSION); //App request permission
                             }
                         })
-                        .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() { //Show user the Cancel button to exit
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();
@@ -50,11 +50,11 @@ public class SplashActivity extends AppCompatActivity {
                         })
                         .create().show();
             } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, ACTIVITY_PERMISSION);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, ACTIVITY_PERMISSION); //App request permission
             }
-        }  else {
+        }  else { //Run the app if the app already has permission
             handler = new Handler();
-            handler.postDelayed(new Runnable() {
+            handler.postDelayed(new Runnable() { //Use splash activity for a better UX
                 @Override
                 public void run() {
                     Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
@@ -65,7 +65,7 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) { //Check permission result and if accepted, continue
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == ACTIVITY_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
