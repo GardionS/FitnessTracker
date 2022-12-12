@@ -1,20 +1,19 @@
 package com.gmail.gardion01.fitnesstracker.model;
 
-public class Fitness {
+public class Quest {
     private int id;
     private int userId;
-    private int typeId;
+    private int questType;
     private String date;
     private int value;
 
-    public Fitness() {
+    public Quest(int userId, int questType, String date) {
+        this.userId = userId;
+        this.questType = questType;
+        this.date = date;
     }
 
-    public Fitness(int userId, int typeId, String date) {
-        this.userId = userId;
-        this.date = date;
-        this.typeId = typeId;
-        this.value = 0;
+    public Quest() {
     }
 
     public int getId() {
@@ -33,20 +32,20 @@ public class Fitness {
         this.userId = userId;
     }
 
+    public int getQuestType() {
+        return questType;
+    }
+
+    public void setQuestType(int questType) {
+        this.questType = questType;
+    }
+
     public String getDate() {
         return date;
     }
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public int getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
     }
 
     public int getValue() {

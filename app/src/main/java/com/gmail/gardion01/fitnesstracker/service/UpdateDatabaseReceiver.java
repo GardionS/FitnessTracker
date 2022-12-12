@@ -2,6 +2,7 @@ package com.gmail.gardion01.fitnesstracker.service;
 
 import static com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity.MAIN_DATE_STEP;
 import static com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity.MAIN_STEP_COUNTER;
+import static com.gmail.gardion01.fitnesstracker.enumeration.FitnessType.WALKING;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -21,7 +22,7 @@ public class UpdateDatabaseReceiver extends BroadcastReceiver {
         sharedPreferences = context.getSharedPreferences(LoginActivity.SHARED_PREFS, Context.MODE_PRIVATE);
     }
     private void updateDatabase() {
-        databaseFitness.updateFitnessWalk(sharedPreferences.getInt(LoginActivity.ID_KEY,0), sharedPreferences.getString(MAIN_DATE_STEP, ""), sharedPreferences.getInt(MAIN_STEP_COUNTER, 0));
+        databaseFitness.updateFitness(sharedPreferences.getInt(LoginActivity.ID_KEY,0), WALKING.getValue(), sharedPreferences.getString(MAIN_DATE_STEP, ""), sharedPreferences.getInt(MAIN_STEP_COUNTER, 0));
     }
 
     @Override

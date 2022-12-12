@@ -17,13 +17,15 @@ public class DatabaseUser extends DatabaseMain {
     private static final String COLUMN_USER_AGE = "userAge";
     private static final String COLUMN_USER_WEIGHT = "userWeight";
     private static final String COLUMN_USER_EXP = "userExp";
-    private static final String COLUMN_USER_DAILY_QUEST = "userDailyQuest";
-    public static String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "(" + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_NAME + " TEXT," + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT," + COLUMN_USER_AGE + " INTEGER," + COLUMN_USER_WEIGHT + " INTEGER," + COLUMN_USER_EXP + " INTEGER," + COLUMN_USER_DAILY_QUEST + " BOOLEAN" + ")";
+    public static String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
+            + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_USER_NAME + " TEXT," + COLUMN_USER_EMAIL + " TEXT,"
+            + COLUMN_USER_PASSWORD + " TEXT," + COLUMN_USER_AGE + " INTEGER,"
+            + COLUMN_USER_WEIGHT + " INTEGER," + COLUMN_USER_EXP + " INTEGER" + ")";
     public static String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
 
     public DatabaseUser(Context context) {
         super(context);
-
     }
 
     public void addUser(User user) {
@@ -35,7 +37,6 @@ public class DatabaseUser extends DatabaseMain {
         values.put(COLUMN_USER_AGE, user.getAge());
         values.put(COLUMN_USER_WEIGHT, user.getWeight());
         values.put(COLUMN_USER_EXP, 0);
-        values.put(COLUMN_USER_DAILY_QUEST, false);
         user.setExp(0);
         db.insert(TABLE_USER, null, values);
         db.close();
@@ -44,14 +45,14 @@ public class DatabaseUser extends DatabaseMain {
     @SuppressLint("Range")
     public User getUser(String email) {
         SQLiteDatabase db = getReadableDatabase();
-        String[] columns = {COLUMN_USER_ID, COLUMN_USER_EMAIL, COLUMN_USER_NAME, COLUMN_USER_PASSWORD, COLUMN_USER_AGE, COLUMN_USER_WEIGHT, COLUMN_USER_EXP, COLUMN_USER_DAILY_QUEST};
+        String[] columns = {COLUMN_USER_ID, COLUMN_USER_EMAIL, COLUMN_USER_NAME, COLUMN_USER_PASSWORD, COLUMN_USER_AGE, COLUMN_USER_WEIGHT, COLUMN_USER_EXP};
         String whereClause = COLUMN_USER_EMAIL + " = '" + email + "'";
 
         Cursor cursor = db.query(TABLE_USER, columns, whereClause, null, null, null, null);
 
         User user = new User();
         if (cursor.moveToFirst()) {
-            user = new User(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ID))), cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)), cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)), Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_WEIGHT))), Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_AGE))), Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EXP))), Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_USER_DAILY_QUEST))));
+            user = new User(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ID))), cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)), cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)), Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_WEIGHT))), Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_AGE))), Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EXP))));
         }
         cursor.close();
         db.close();
@@ -128,11 +129,9 @@ public class DatabaseUser extends DatabaseMain {
         db.update(TABLE_USER, values, whereClause, selectionArgs);
         db.close();
     }
-
-    public void completeDailyQuest(int userId, int exp) {
+    public void addExp(int userId, int exp) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_DAILY_QUEST, true);
         values.put(COLUMN_USER_EXP, exp);
         String whereClause = COLUMN_USER_ID + " = ?";
         String[] selectionArgs = {Integer.toString(userId)};

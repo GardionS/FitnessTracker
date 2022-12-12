@@ -120,7 +120,7 @@
         android:drawableLeft="@drawable/ic_baseline_key_24"
         android:drawablePadding="10dp"
         android:hint="Password"
-        android:imeOptions="actionNext"
+        android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:maxLines="1"
         android:padding="15dp"

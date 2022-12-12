@@ -1,5 +1,7 @@
 package com.gmail.gardion01.fitnesstracker.controller.fragment;
 
+import static com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity.MAIN_DAILY_QUEST_TARGET;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,9 +35,10 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        model = new ViewModelProvider(this).get(HomeFragmentViewModel.class);
         Intent intent = new Intent(getContext(), BoundService.class);
         getActivity().startService(intent); //Start the service
-        getActivity().bindService(intent, model.getServiceConnection(), getContext().BIND_AUTO_CREATE);
+        getActivity().bindService(intent, model.getServiceConnection(), Context.BIND_AUTO_CREATE);
         model.startGettingStepData(); //Start live data
     }
 
@@ -79,7 +82,7 @@ public class HomeFragment extends Fragment {
                         if (model.getBinder().getValue() != null) {
                             if (model.getStepData() != null) {
                                 steps.setText(model.getStepData().getValue() + " steps"); //Update the step data
-                                dailyQuestProgress.setText(model.getStepData().getValue() + "/6000 steps"); //Update the quest data
+                                dailyQuestProgress.setText(model.getStepData().getValue() + "/" + sharedPreferences.getInt(MAIN_DAILY_QUEST_TARGET, 0)+" steps"); //Update the quest data
                             }
                             handler.postDelayed(this, 500); //reset every step 1000ms
                         } else {
@@ -117,18 +120,16 @@ public class HomeFragment extends Fragment {
     }
 
     private void initUser() { //Initialize user
-
-        setObservers(); //Set the observer for live data
-
         username.setText(sharedPreferences.getString(LoginActivity.USERNAME_KEY, ""));
         int exp = sharedPreferences.getInt(LoginActivity.EXP_KEY, 0);
         lvl.setText(Integer.toString(Math.floorDiv(exp, 1000))); //Each level needs 1000xp
-        model = new ViewModelProvider(this).get(HomeFragmentViewModel.class);
         if (sharedPreferences.getBoolean(HomeActivity.MAIN_DAILY_QUEST, false)) { //The exp number will be strikethrough indicating already complete
             dailyQuestExp.setPaintFlags(dailyQuestExp.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
             dailyQuestExp.setPaintFlags(0);
         }
+
+        setObservers(); //Set the observer for live data
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //Use animation for newer version
             stepsBar.setProgress(sharedPreferences.getInt(HomeActivity.MAIN_STEP_COUNTER, 0), true); //Set step bar

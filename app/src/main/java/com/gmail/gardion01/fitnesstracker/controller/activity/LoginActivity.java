@@ -1,5 +1,12 @@
 package com.gmail.gardion01.fitnesstracker.controller.activity;
 
+import static com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity.MAIN_DAILY_QUEST_TARGET;
+import static com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity.MAIN_DAILY_RUNNING_TARGET;
+import static com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity.MAIN_DAILY_STEP_TARGET;
+import static com.gmail.gardion01.fitnesstracker.enumeration.FitnessType.RUNNING;
+import static com.gmail.gardion01.fitnesstracker.enumeration.FitnessType.WALKING;
+import static com.gmail.gardion01.fitnesstracker.enumeration.QuestType.DAILY_QUEST;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -16,9 +23,15 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 import com.example.fitnesstracker.R;
 import com.gmail.gardion01.fitnesstracker.database.DatabaseFitness;
+import com.gmail.gardion01.fitnesstracker.database.DatabaseFitnessType;
 import com.gmail.gardion01.fitnesstracker.database.DatabaseMain;
+import com.gmail.gardion01.fitnesstracker.database.DatabaseQuest;
+import com.gmail.gardion01.fitnesstracker.database.DatabaseQuestType;
 import com.gmail.gardion01.fitnesstracker.database.DatabaseUser;
 import com.gmail.gardion01.fitnesstracker.model.Fitness;
+import com.gmail.gardion01.fitnesstracker.model.FitnessType;
+import com.gmail.gardion01.fitnesstracker.model.Quest;
+import com.gmail.gardion01.fitnesstracker.model.QuestType;
 import com.gmail.gardion01.fitnesstracker.model.User;
 import com.gmail.gardion01.fitnesstracker.utility.ValidateText;
 
@@ -87,9 +100,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         User user = databaseUser.getUser(email);
         DatabaseFitness databaseFitness = new DatabaseFitness(this);
 
-        Fitness fitness = databaseFitness.getFitness(user.getId(), DatabaseMain.getCurrentDate("dd-MM-yyyy"));
+        Fitness fitness = databaseFitness.getFitness(user.getId(), WALKING.getValue(), DatabaseMain.getCurrentDate("dd-MM-yyyy"));
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(HomeActivity.MAIN_STEP_COUNTER, fitness.getWalk());
+        editor.putInt(HomeActivity.MAIN_STEP_COUNTER, fitness.getValue());
         editor.putString(HomeActivity.MAIN_DATE_STEP, fitness.getDate());
         editor.putString(EMAIL_KEY, user.getEmail());
         editor.putString(USERNAME_KEY, user.getUserName());
@@ -97,7 +110,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor.putInt(WEIGHT_KEY, user.getWeight());
         editor.putInt(EXP_KEY, user.getExp());
         editor.putInt(ID_KEY, user.getId());
-        editor.putBoolean(HomeActivity.MAIN_DAILY_QUEST, user.getDailyQuest());
+
+        DatabaseQuestType databaseQuestType = new DatabaseQuestType(this);
+        QuestType questType = databaseQuestType.getQuestType(DAILY_QUEST.getValue());
+        editor.putInt(MAIN_DAILY_QUEST_TARGET, questType.getQuestTargetValue());
+        DatabaseQuest databaseQuest = new DatabaseQuest(this);
+        Quest quest = databaseQuest.getQuest(user.getId(), DAILY_QUEST.getValue(), DatabaseMain.getCurrentDate("dd-MM-yyyy"));
+        editor.putBoolean(HomeActivity.MAIN_DAILY_QUEST, quest.getValue() > questType.getQuestTargetValue());
+
+        DatabaseFitnessType databaseFitnessType = new DatabaseFitnessType(this);
+        FitnessType fitnessType = databaseFitnessType.getFitnessType(WALKING.getValue());
+        editor.putInt(MAIN_DAILY_STEP_TARGET, fitnessType.getTargetValue());
+        fitnessType = databaseFitnessType.getFitnessType(RUNNING.getValue());
+        editor.putInt(MAIN_DAILY_RUNNING_TARGET, fitnessType.getTargetValue());
+
         editor.apply();
     }
 

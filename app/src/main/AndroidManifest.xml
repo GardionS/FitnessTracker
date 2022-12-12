@@ -48,9 +48,11 @@
         <activity android:name="com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity"
             android:exported="false"
             />
-        <receiver android:name="com.gmail.gardion01.fitnesstracker.controller.UpdateDatabase"
+        <receiver android:name="com.gmail.gardion01.fitnesstracker.service.UpdateDatabaseReceiver"
             />
         <activity android:name="com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity"
+            android:exported="false"/>
+        <activity android:name="com.gmail.gardion01.fitnesstracker.controller.activity.RegisterActivity"
             android:exported="false"/>
         <activity android:name="com.gmail.gardion01.fitnesstracker.controller.activity.RegisterActivity"
             android:exported="false"/>

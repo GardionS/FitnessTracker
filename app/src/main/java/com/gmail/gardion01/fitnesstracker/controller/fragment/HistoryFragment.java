@@ -1,5 +1,7 @@
 package com.gmail.gardion01.fitnesstracker.controller.fragment;
 
+import static com.gmail.gardion01.fitnesstracker.enumeration.FitnessType.WALKING;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -52,7 +54,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
     private void initValue() { //Initialize all value
         Fitness fitnessToday = new Fitness();
-        fitnessToday.setWalk(sharedPreferences.getInt(HomeActivity.MAIN_STEP_COUNTER, 0));
+        fitnessToday.setValue(sharedPreferences.getInt(HomeActivity.MAIN_STEP_COUNTER, 0));
         setFitnessValue(fitnessToday);
     }
 
@@ -67,16 +69,16 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         date = calendar.getTime();
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 
-        Fitness fitness = databaseFitness.getFitness(sharedPreferences.getInt(LoginActivity.ID_KEY, 0), format.format(date));
+        Fitness fitness = databaseFitness.getFitness(sharedPreferences.getInt(LoginActivity.ID_KEY, 0), WALKING.getValue(), format.format(date));
         setFitnessValue(fitness);
     }
 
     private void setFitnessValue(Fitness fitness) { //Initialize all the fitness value
         SimpleDateFormat format = new SimpleDateFormat("E, MMM dd yyyy");
         historyDate.setText(format.format(date));
-        historyStepsWalking.setText(fitness.getWalk() + " steps");
-        historyCaloriesWalking.setText(convertStepsToCalorie(fitness.getWalk()) + " cal");
-        historyWalkingBar.setProgress((int) Math.round(fitness.getWalk()));
+        historyStepsWalking.setText(fitness.getValue() + " steps");
+        historyCaloriesWalking.setText(convertStepsToCalorie(fitness.getValue()) + " cal");
+        historyWalkingBar.setProgress((int) Math.round(fitness.getValue()));
     }
 
     private void initListener() { //Initialize all listener

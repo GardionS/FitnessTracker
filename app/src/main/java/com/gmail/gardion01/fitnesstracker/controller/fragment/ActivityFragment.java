@@ -1,5 +1,8 @@
 package com.gmail.gardion01.fitnesstracker.controller.fragment;
 
+import static com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity.MAIN_DAILY_RUNNING_TARGET;
+import static com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity.SHARED_PREFS;
+import static com.gmail.gardion01.fitnesstracker.enumeration.FitnessType.RUNNING;
 import static com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity.MAIN_STEP_COUNTER;
 import static com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity.ID_KEY;
 
@@ -22,7 +25,6 @@ import com.gmail.gardion01.fitnesstracker.model.Fitness;
 
 public class ActivityFragment extends Fragment implements View.OnClickListener {
 
-    public static final String SHARED_PREFS_ACTIVITY = "shared_prefs_activity";
     public static final String ACTIVITY_PREVIOUS_STEP_KEY = "activity_step_key";
     public static final String ACTIVITY_RUNNING_KEY = "activity_running_key";
 
@@ -47,7 +49,7 @@ public class ActivityFragment extends Fragment implements View.OnClickListener {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         databaseFitness = new DatabaseFitness(getActivity());
-        sharedPreferencesActivity = getActivity().getSharedPreferences(SHARED_PREFS_ACTIVITY, Context.MODE_PRIVATE);
+        sharedPreferencesActivity = getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         sharedPreferencesUser = getActivity().getApplicationContext().getSharedPreferences(LoginActivity.SHARED_PREFS, Context.MODE_PRIVATE);
     }
 
@@ -60,14 +62,14 @@ public class ActivityFragment extends Fragment implements View.OnClickListener {
                     running = false;
                     activityPlayJogging.setImageResource(R.drawable.ic_baseline_play_arrow_24);
                     int diffSteps = sharedPreferencesUser.getInt(MAIN_STEP_COUNTER, 0) - sharedPreferencesActivity.getInt(ACTIVITY_PREVIOUS_STEP_KEY, 0);
-                    int previousRunning = databaseFitness.getRunning(sharedPreferencesUser.getInt(ID_KEY, 0), DatabaseMain.getCurrentDate("dd-MM-yyyy"));
-                    databaseFitness.updateFitnessRunning(sharedPreferencesUser.getInt(ID_KEY, 0), DatabaseMain.getCurrentDate("dd-MM-yyyy"), previousRunning + diffSteps); //Update database on running
+                    int previousRunning = databaseFitness.getFitness(sharedPreferencesUser.getInt(ID_KEY, 0), RUNNING.getValue(), DatabaseMain.getCurrentDate("dd-MM-yyyy")).getValue();
+                    databaseFitness.updateFitness(sharedPreferencesUser.getInt(ID_KEY, 0), RUNNING.getValue(), DatabaseMain.getCurrentDate("dd-MM-yyyy"), previousRunning + diffSteps); //Update database on running
                     editor.putInt(ACTIVITY_PREVIOUS_STEP_KEY, 0);
                     editor.putBoolean(ACTIVITY_RUNNING_KEY, false);
                 } else {
                     running = true;
                     activityPlayJogging.setImageResource(R.drawable.ic_baseline_pause_24);
-                    int previousStep = databaseFitness.getRunning(sharedPreferencesUser.getInt(ID_KEY, 0), DatabaseMain.getCurrentDate("dd-MM-yyyy"));
+                    int previousStep =  databaseFitness.getFitness(sharedPreferencesUser.getInt(ID_KEY, 0), RUNNING.getValue(), DatabaseMain.getCurrentDate("dd-MM-yyyy")).getValue();
                     editor.putInt(ACTIVITY_PREVIOUS_STEP_KEY, previousStep); //Store current step count for running
                     editor.putBoolean(ACTIVITY_RUNNING_KEY, true);
                 }
@@ -84,9 +86,9 @@ public class ActivityFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initValue() { //Initialize all value
-        Fitness fitness = databaseFitness.getFitness(sharedPreferencesUser.getInt(ID_KEY, 0), DatabaseMain.getCurrentDate("dd-MM-yyyy"));
-        activityStepCounter.setText(fitness.getRunning() + "/6000 steps");
-        activityCalorie.setText(convertToCalorie(fitness.getRunning()) + " cal");
+        Fitness fitness = databaseFitness.getFitness(sharedPreferencesUser.getInt(ID_KEY, 0), RUNNING.getValue(), DatabaseMain.getCurrentDate("dd-MM-yyyy"));
+        activityStepCounter.setText(fitness.getValue() + "/ " + sharedPreferencesUser.getInt(MAIN_DAILY_RUNNING_TARGET, 0) + " steps");
+        activityCalorie.setText(convertToCalorie(fitness.getValue()) + " cal");
     }
 
     private void initListener() { //Initialize all listener

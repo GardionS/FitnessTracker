@@ -1,6 +1,7 @@
 package com.gmail.gardion01.fitnesstracker.controller.activity;
 
 import static com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity.ID_KEY;
+import static com.gmail.gardion01.fitnesstracker.enumeration.FitnessType.WALKING;
 import static com.gmail.gardion01.fitnesstracker.service.ForegroundService.SERVICE_ID;
 
 import android.app.NotificationChannel;
@@ -33,8 +34,11 @@ public class HomeActivity extends AppCompatActivity {
     public static String MAIN_LAST_STEP_COUNTER = "main_last_step_count";
     public static String MAIN_DATE_STEP = "main_date_count";
     public static String MAIN_DAILY_QUEST = "main_daily_quest";
+    public static String MAIN_DAILY_QUEST_TARGET = "main_daily_quest_target";
+    public static String MAIN_DAILY_STEP_TARGET = "main_daily_step_target";
+    public static String MAIN_DAILY_RUNNING_TARGET = "main_daily_running_target";
 
-    public static DatabaseFitness databaseFitnessMain;
+    public DatabaseFitness databaseFitness;
     public static NotificationManager notificationManager;
     NavigationBarView bottomNavigationView;
     private SharedPreferences sharedPreferences;
@@ -43,13 +47,9 @@ public class HomeActivity extends AppCompatActivity {
     private HistoryFragment historyFragment;
     private ProfileFragment profileFragment;
     private final Stack stack = new Stack();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        databaseFitnessMain = new DatabaseFitness(this);
-        sharedPreferences = getSharedPreferences(LoginActivity.SHARED_PREFS, Context.MODE_PRIVATE);
-
         setContentView(R.layout.main_screen);
         initVariable();
         if (savedInstanceState == null) {
@@ -100,6 +100,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initVariable() { //Initialize all variable
 
+        databaseFitness = new DatabaseFitness(this);
+        sharedPreferences = getSharedPreferences(LoginActivity.SHARED_PREFS, Context.MODE_PRIVATE);
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         homeFragment = new HomeFragment();
         activityFragment = new ActivityFragment();
@@ -112,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        databaseFitnessMain.updateFitnessWalk(sharedPreferences.getInt(ID_KEY, 0), sharedPreferences.getString(MAIN_DATE_STEP, ""), sharedPreferences.getInt(MAIN_STEP_COUNTER, 0)); //Update database when application is pause/closed
+        databaseFitness.updateFitness(sharedPreferences.getInt(ID_KEY, 0), WALKING.getValue(), sharedPreferences.getString(MAIN_DATE_STEP, ""), sharedPreferences.getInt(MAIN_STEP_COUNTER, 0)); //Update database when application is pause/closed
     }
 
     private void startForegroundServices() { //Start the foreground service

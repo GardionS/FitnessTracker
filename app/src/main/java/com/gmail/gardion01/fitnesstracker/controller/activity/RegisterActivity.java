@@ -71,11 +71,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void verifyRegisterData() {
-        if (validateText.validateEmailEditText(emailEditText, getString(R.string.error_message_email))
-                && validateText.validateEditText(usernameEditText, getString(R.string.error_message_username))
-                && validateText.validateEditText(passwordEditText, getString(R.string.error_message_password))
-                && validateText.validateEditText(ageEditText, getString(R.string.error_message_age))
-                && validateText.validateEditText(weightEditText, getString(R.string.error_message_weight))) { //Check all data
+        if (!validateText.validateEmailEditText(emailEditText, getString(R.string.error_message_email))
+                || !validateText.validateEditText(usernameEditText, getString(R.string.error_message_username))
+                || !validateText.validateEditText(passwordEditText, getString(R.string.error_message_password))
+                || !validateText.validateEditText(ageEditText, getString(R.string.error_message_age))
+                || !validateText.validateEditText(weightEditText, getString(R.string.error_message_weight))) { //Check all data
             return;
         }
         if (!databaseUser.checkUser(emailEditText.getText().toString().trim())) { //Verify duplicate email

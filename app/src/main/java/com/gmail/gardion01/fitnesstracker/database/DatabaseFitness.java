@@ -10,17 +10,19 @@ import com.gmail.gardion01.fitnesstracker.model.Fitness;
 
 public class DatabaseFitness extends DatabaseMain {
 
-    private static final String TABLE_FITNESS = "Fitness";
-    private static final String COLUMN_FITNESS_ID = "fitnessID";
-    private static final String COLUMN_USER_ID = "userID";
-    private static final String COLUMN_DATE = "fitnessDate";
-    private static final String COLUMN_WALK = "fitnessWalk";
-    private static final String COLUMN_RUNNING = "fitnessRunning";
+    public static final String TABLE_FITNESS = "Fitness";
+    public static final String COLUMN_FITNESS_ID = "fitnessID";
+    public static final String COLUMN_USER_ID = "userID";
+    public static final String COLUMN_FITNESS_TYPE = "fitnessTypeId";
+    public static final String COLUMN_DATE = "fitnessDate";
+    public static final String COLUMN_VALUE = "fitnessRunning";
     public static String CREATE_FITNESS_TABLE = "CREATE TABLE " + TABLE_FITNESS + "("
             + COLUMN_FITNESS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_ID + " INTEGER,"
-            + COLUMN_DATE + " STRING," + COLUMN_WALK + " INTEGER, " + COLUMN_RUNNING + " INTEGER, "
+            + COLUMN_FITNESS_TYPE + " INTEGER, " + COLUMN_DATE + " STRING,"  + COLUMN_VALUE + " INTEGER,"
             + "FOREIGN KEY (" + COLUMN_USER_ID + ") "
-            + " REFERENCES " + DatabaseUser.TABLE_USER + " (" + DatabaseUser.COLUMN_USER_ID + ")"
+            + "REFERENCES " + DatabaseUser.TABLE_USER + " (" + DatabaseUser.COLUMN_USER_ID + "), "
+            + "FOREIGN KEY (" + COLUMN_FITNESS_TYPE + ") "
+            + "REFERENCES " + DatabaseFitnessType.TABLE_FITNESS_TYPE + " (" + DatabaseFitnessType.COLUMN_FITNESS_TYPE_ID + ")"
             + ")";
     public static String UPDATE_FITNESS_TABLE = "UPDATE " + TABLE_FITNESS + " SET ";
     public static String DROP_FITNESS_TABLE = "DROP TABLE IF EXISTS " + TABLE_FITNESS;
@@ -29,40 +31,28 @@ public class DatabaseFitness extends DatabaseMain {
         super(context);
     }
 
-    public void addFitness(int userId) { //Today
+    public void addFitness(int userId, int type) { //Today
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_ID, userId);
         values.put(COLUMN_DATE, DatabaseMain.getCurrentDate("dd-MM-yyyy"));
-        values.put(COLUMN_WALK, 0);
-        values.put(COLUMN_RUNNING, 0);
-        db.insert(TABLE_FITNESS, null, values);
-        db.close();
-    }
-
-    private void addFitness(int userId, String date) { //Specific date
-
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_ID, userId);
-        values.put(COLUMN_DATE, date);
-        values.put(COLUMN_WALK, 0);
+        values.put(COLUMN_FITNESS_TYPE, type);
+        values.put(COLUMN_VALUE, 0);
         db.insert(TABLE_FITNESS, null, values);
         db.close();
     }
 
     @SuppressLint("Range")
-    public Fitness getFitness(int userId, String date) {
+    public Fitness getFitness(int userId, int type, String date) {
 
         SQLiteDatabase db = getReadableDatabase();
         String[] columns = {
                 COLUMN_FITNESS_ID,
-                COLUMN_WALK,
-                COLUMN_RUNNING
+                COLUMN_VALUE
         };
-        String whereClause = COLUMN_USER_ID + " = ?" + " AND " + COLUMN_DATE + " = ?";
-        String[] selectionArgs = {Integer.toString(userId), date};
+        String whereClause = COLUMN_USER_ID + " = ?" + " AND " + COLUMN_FITNESS_TYPE + " = ?"+ " AND " + COLUMN_DATE + " = ?" ;
+        String[] selectionArgs = {Integer.toString(userId), Integer.toString(type) , date};
         Cursor cursor = db.query(TABLE_FITNESS,
                 columns,
                 whereClause,
@@ -70,68 +60,30 @@ public class DatabaseFitness extends DatabaseMain {
                 null,
                 null,
                 null);
-        Fitness fitness = new Fitness(userId, date);
+        Fitness fitness = new Fitness(userId, type, date);
 
         if (cursor.moveToFirst()) { //Check if there is data
             fitness.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_FITNESS_ID))));
-            fitness.setWalk(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_WALK))));
-            fitness.setRunning(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_RUNNING))));
+            fitness.setValue(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_VALUE))));
         } else if (date.equals(DatabaseMain.getCurrentDate("dd-MM-yyyy"))) { //There is no data in db for today, so create new record
-            addFitness(userId);
-            fitness.setWalk(0);
-            fitness.setRunning(0);
+            addFitness(userId, type);
+            fitness.setValue(0);
         }
         cursor.close();
         db.close();
         return fitness;
     }
 
-    public void updateFitnessWalk(int userId, String date, int value) {
+    public void updateFitness(int userId, int type, String date, int value) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_ID, userId);
         values.put(COLUMN_DATE, date);
-        values.put(COLUMN_WALK, value);
-        String whereClause = COLUMN_USER_ID + " = ? " + " AND " + COLUMN_DATE + " = ?";
-        String[] selectionArgs = {Integer.toString(userId), date};
+        values.put(COLUMN_VALUE, value);
+        String whereClause = COLUMN_USER_ID + " = ? " + " AND " + COLUMN_FITNESS_TYPE + " = ?" + " AND " + COLUMN_DATE + " = ?";
+        String[] selectionArgs = {Integer.toString(userId), Integer.toString(type), date};
         db.update(TABLE_FITNESS, values, whereClause, selectionArgs);
         db.close();
     }
 
-    @SuppressLint("Range")
-    public int getRunning(int userId, String date) {
-
-        SQLiteDatabase db = getReadableDatabase();
-        String[] columns = {
-                COLUMN_RUNNING
-        };
-        String whereClause = COLUMN_USER_ID + " = " + userId + " AND " + COLUMN_DATE + " = " + date;
-
-        Cursor cursor = db.query(TABLE_FITNESS,
-                columns,
-                whereClause,
-                null,
-                null,
-                null,
-                null);
-        int walking = 0;
-        if (cursor.moveToFirst()) {
-            walking = cursor.getInt(cursor.getColumnIndex(COLUMN_RUNNING));
-        }
-        cursor.close();
-        db.close();
-        return walking;
-    }
-
-    public void updateFitnessRunning(int userId, String date, int value) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_ID, userId);
-        values.put(COLUMN_DATE, date);
-        values.put(COLUMN_RUNNING, value);
-        String whereClause = COLUMN_USER_ID + " = ? " + " AND " + COLUMN_DATE + " = ?";
-        String[] selectionArgs = {Integer.toString(userId), date};
-        db.update(TABLE_FITNESS, values, whereClause, selectionArgs);
-        db.close();
-    }
 }

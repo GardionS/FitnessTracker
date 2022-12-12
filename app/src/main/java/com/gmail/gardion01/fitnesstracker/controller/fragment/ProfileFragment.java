@@ -1,6 +1,7 @@
 package com.gmail.gardion01.fitnesstracker.controller.fragment;
 
 import static com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity.ID_KEY;
+import static com.gmail.gardion01.fitnesstracker.enumeration.FitnessType.WALKING;
 
 import android.content.Context;
 import android.content.Intent;
@@ -67,10 +68,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         startActivity(intent);
     }
     private void logout(){ //Logout
-        databaseFitness.updateFitnessWalk(sharedPreferences.getInt(ID_KEY, 0), sharedPreferences.getString(HomeActivity.MAIN_DATE_STEP, ""), sharedPreferences.getInt(HomeActivity.MAIN_STEP_COUNTER, 0));
+        databaseFitness.updateFitness(sharedPreferences.getInt(ID_KEY, 0), WALKING.getValue(), sharedPreferences.getString(HomeActivity.MAIN_DATE_STEP, ""), sharedPreferences.getInt(HomeActivity.MAIN_STEP_COUNTER, 0));
         sharedPreferences.edit().clear().commit();
-        SharedPreferences sharedPreferencesActivity = getActivity().getSharedPreferences(ActivityFragment.SHARED_PREFS_ACTIVITY, Context.MODE_PRIVATE);
-        sharedPreferencesActivity.edit().clear().commit();
         stopForegroundService();
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
