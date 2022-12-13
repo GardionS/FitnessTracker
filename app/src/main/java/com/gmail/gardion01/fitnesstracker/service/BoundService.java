@@ -5,13 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Binder;
-import android.os.Handler;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
 import com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity;
-import com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity;
 
 public class BoundService extends Service {
     private IBinder iBinder = new LocalBinder();
@@ -29,15 +27,15 @@ public class BoundService extends Service {
         return iBinder;
     }
 
-    public class LocalBinder extends Binder { //Local binder to receive the current local service
-        public BoundService getService() {
-            return BoundService.this;
-        }
-    }
-
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
         stopSelf(); //Stop the current service
+    }
+
+    public class LocalBinder extends Binder { //Local binder to receive the current local service
+        public BoundService getService() {
+            return BoundService.this;
+        }
     }
 }

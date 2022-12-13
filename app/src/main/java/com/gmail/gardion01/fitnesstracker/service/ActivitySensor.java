@@ -8,7 +8,6 @@ import static com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivit
 import static com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity.MAIN_STEP_COUNTER;
 import static com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity.EXP_KEY;
 import static com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity.ID_KEY;
-import static com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity.SHARED_PREFS;
 import static com.gmail.gardion01.fitnesstracker.enumeration.FitnessType.WALKING;
 import static com.gmail.gardion01.fitnesstracker.enumeration.QuestType.DAILY_QUEST;
 
@@ -49,10 +48,10 @@ public class ActivitySensor implements SensorEventListener {
         this.context = context;
         initVariable();
     }
+
     public void initVariable() { //Initialize all variable
         questList = new HashMap<>();
         sharedPreferences = context.getSharedPreferences(LoginActivity.SHARED_PREFS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         databaseFitness = new DatabaseFitness(context);
@@ -74,14 +73,14 @@ public class ActivitySensor implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) { //Sensor value updated
         /*
-        * 1. Check if the date stored is today or not. This will show how old the data stored in the phone since it use sharedPreference
-        * 2. If date store today, then check whether the value is zero since it means it's a new user or a new login
-        * 3. If not then check whether the last step counter is bigger then current value show up in the sensor, if yes means that the phone just restarted because the sensor will reset every restart
-        * 4. If not then check whether the last step counter is 0, because if the user just login, the last step counter is zero
-        * 5. If not, the phone has not yet been restarted and it will calculate the value based on dataStore + current - lastStep
-        * 6. If not continue from point 1. That means the data is from yesterday, check if the currentStep is higher meaning Phone not yet reboot *Note, the user can also workout before starting the app which can make this false
-        * 7. If not then that means the phone has been restarted and will store based on new data
-        * */
+         * 1. Check if the date stored is today or not. This will show how old the data stored in the phone since it use sharedPreference
+         * 2. If date store today, then check whether the value is zero since it means it's a new user or a new login
+         * 3. If not then check whether the last step counter is bigger then current value show up in the sensor, if yes means that the phone just restarted because the sensor will reset every restart
+         * 4. If not then check whether the last step counter is 0, because if the user just login, the last step counter is zero
+         * 5. If not, the phone has not yet been restarted and it will calculate the value based on dataStore + current - lastStep
+         * 6. If not continue from point 1. That means the data is from yesterday, check if the currentStep is higher meaning Phone not yet reboot *Note, the user can also workout before starting the app which can make this false
+         * 7. If not then that means the phone has been restarted and will store based on new data
+         * */
         int currentStep = (int) sensorEvent.values[0];
         SharedPreferences.Editor editor = sharedPreferences.edit();
         if (sharedPreferences.getString(MAIN_DATE_STEP, "").equals(DatabaseMain.getCurrentDate("dd-MM-yyyy"))) { //data from today
@@ -92,7 +91,7 @@ public class ActivitySensor implements SensorEventListener {
                 stepCount = sharedPreferences.getInt(MAIN_STEP_COUNTER, 0) + currentStep; //The data  show it's from the same day so just add with current sensor value
                 editor.putInt(MAIN_LAST_STEP_COUNTER, currentStep);
                 editor.putInt(MAIN_STEP_COUNTER, stepCount);
-            } else if(sharedPreferences.getInt(MAIN_LAST_STEP_COUNTER, 0) == 0) {//User just log in
+            } else if (sharedPreferences.getInt(MAIN_LAST_STEP_COUNTER, 0) == 0) {//User just log in
                 editor.putInt(MAIN_LAST_STEP_COUNTER, currentStep);
             } else { //Phone has not reboot
                 stepCount = sharedPreferences.getInt(HomeActivity.MAIN_STEP_COUNTER, 0) + currentStep - sharedPreferences.getInt(HomeActivity.MAIN_LAST_STEP_COUNTER, 0);
@@ -147,6 +146,7 @@ public class ActivitySensor implements SensorEventListener {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 12, intent, PendingIntent.FLAG_IMMUTABLE);
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, 15 * MINUTE, 15 * MINUTE, pendingIntent); //Update database very 15 mintues
     }
+
     public void destroyAlarm() { //Destroy the alarm
         Intent intent = new Intent(context, UpdateDatabaseReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 12, intent, PendingIntent.FLAG_IMMUTABLE);

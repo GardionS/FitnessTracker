@@ -37,16 +37,16 @@ public class HomeActivity extends AppCompatActivity {
     public static String MAIN_DAILY_QUEST_TARGET = "main_daily_quest_target";
     public static String MAIN_DAILY_STEP_TARGET = "main_daily_step_target";
     public static String MAIN_DAILY_RUNNING_TARGET = "main_daily_running_target";
-
-    public DatabaseFitness databaseFitness;
     public static NotificationManager notificationManager;
+    private Stack stack = new Stack();
+    public DatabaseFitness databaseFitness;
     NavigationBarView bottomNavigationView;
     private SharedPreferences sharedPreferences;
     private HomeFragment homeFragment = new HomeFragment();
     private ActivityFragment activityFragment;
     private HistoryFragment historyFragment;
     private ProfileFragment profileFragment;
-    private final Stack stack = new Stack();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +58,7 @@ public class HomeActivity extends AppCompatActivity {
         }
         initBottomNavigation();
     }
+
     private void initBottomNavigation() { //Select bottom navigation and replace the frame with the fragment.
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -86,6 +87,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+
     private void selectMenu(int id) { //Highlight selected menu
         Menu menu = bottomNavigationView.getMenu();
         for (int i = 0; i < menu.size(); i++) {
