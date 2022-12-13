@@ -75,7 +75,7 @@ public class ActivityFragment extends Fragment implements View.OnClickListener {
                     editor.putBoolean(ACTIVITY_RUNNING_KEY, false);
                 } else {
                     running = true;
-                    activityPlayJogging.setImageResource(R.drawable.ic_baseline_pause_24);
+                    activityPlayJogging.setImageResource(R.drawable.ic_baseline_pause_24); //Change from play to pause button
                     int previousStep =  databaseFitness.getFitness(sharedPreferencesUser.getInt(ID_KEY, 0), RUNNING.getValue(), DatabaseMain.getCurrentDate("dd-MM-yyyy")).getValue();
                     editor.putInt(ACTIVITY_PREVIOUS_STEP_KEY, previousStep); //Store current step count for running
                     editor.putBoolean(ACTIVITY_RUNNING_KEY, true);

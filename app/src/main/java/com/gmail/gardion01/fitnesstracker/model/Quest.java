@@ -5,7 +5,7 @@ public class Quest {
     private int userId;
     private int questType;
     private String date;
-    private int value;
+    private boolean value;
 
     public Quest(int userId, int questType, String date) {
         this.userId = userId;
@@ -48,11 +48,11 @@ public class Quest {
         this.date = date;
     }
 
-    public int getValue() {
+    public boolean isValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(boolean value) {
         this.value = value;
     }
 }

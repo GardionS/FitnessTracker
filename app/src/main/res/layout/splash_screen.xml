@@ -8,13 +8,7 @@
         android:layout_width="163dp"
         android:layout_height="165dp"
         app:srcCompat="@mipmap/ic_logo"
-        android:layout_centerInParent="true"
-        />
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@+id/titleMainMenu"-->
-<!--        android:gravity="center">-->
+        android:layout_centerInParent="true" />
+<!--A basic splash screen that shows the logo of the application for a better UX-->
 
 </RelativeLayout>

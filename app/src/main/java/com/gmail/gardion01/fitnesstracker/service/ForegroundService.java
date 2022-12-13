@@ -44,8 +44,7 @@ public class ForegroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Notification notification = createNotification("Starting Service");
-        startForeground(1, notification);
-
+        startForeground(NOTIFICATION_ID, notification);
         return START_STICKY; //If the device killed the application due to low memory, it will restart the service
     }
 

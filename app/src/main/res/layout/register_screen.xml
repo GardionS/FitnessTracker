@@ -132,7 +132,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical">
-
+<!--Using relative layout so that it can have a better design and show it in the middle    -->
         <Button
             android:id="@+id/registerButton"
             android:layout_width="match_parent"

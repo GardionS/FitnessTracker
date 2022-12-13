@@ -88,8 +88,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             databaseUser.addUser(user); //Add user data to database
             emptyEditText();
 
-            DatabaseMain databaseMain = new DatabaseMain(this);
-            databaseMain.checkDatabase();
             goToLogin();//After the user is added then the screen redirect to the login
         } else {
             Toast.makeText(this, getString(R.string.error_message_regiter), Toast.LENGTH_SHORT);

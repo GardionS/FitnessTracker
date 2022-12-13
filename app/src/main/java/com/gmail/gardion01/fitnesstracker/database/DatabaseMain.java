@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DatabaseMain extends SQLiteOpenHelper {//
-    public static final int DATABASE_VERSION = 13;
+    public static final int DATABASE_VERSION = 19;
     public static final String DATABASE_NAME = "FitnessTracker.db";
     private Context context;
     public DatabaseMain(@Nullable Context context) {

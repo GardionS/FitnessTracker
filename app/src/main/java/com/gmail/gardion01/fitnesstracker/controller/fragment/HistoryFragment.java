@@ -1,5 +1,7 @@
 package com.gmail.gardion01.fitnesstracker.controller.fragment;
 
+import static com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity.ID_KEY;
+import static com.gmail.gardion01.fitnesstracker.enumeration.FitnessType.RUNNING;
 import static com.gmail.gardion01.fitnesstracker.enumeration.FitnessType.WALKING;
 
 import android.content.Context;
@@ -30,7 +32,7 @@ import java.util.Date;
 public class HistoryFragment extends Fragment implements View.OnClickListener {
     private final FragmentActivity fragment = getActivity();
     private DatabaseFitness databaseFitness;
-    private TextView historyCaloriesWalking, historyStepsWalking, historyDate;
+    private TextView historyCaloriesWalking, historyStepsWalking, historyDate, historyStepsRunning, historyCaloriesRunning;
     private SharedPreferences sharedPreferences;
     private ImageButton historyPreviousDay, historyNextDay;
     private Date date;
@@ -55,36 +57,44 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         historyCaloriesWalking = getView().findViewById(R.id.historyCaloriesWalking);
         historyStepsWalking = getView().findViewById(R.id.historyStepsWalking);
         historyDate = getView().findViewById(R.id.historyDate);
+        historyStepsRunning = getView().findViewById(R.id.historyStepsRunning);
+        historyCaloriesRunning = getView().findViewById(R.id.historyCaloriesRunning);
         date = new Date();
     }
 
     private void initValue() { //Initialize all value
-        Fitness fitnessToday = new Fitness();
-        fitnessToday.setValue(sharedPreferences.getInt(HomeActivity.MAIN_STEP_COUNTER, 0));
-        setFitnessValue(fitnessToday);
+        getFitness(null);
     }
 
     private int convertStepsToCalorie(int steps) { //Convert steps to calories
         return (int) Math.round(steps * 0.4);
     }
 
-    private void getFitness(boolean dateStatus) { //true: next day | false: previous day
+    private void getFitness(Boolean dateStatus) { //true: next day | false: previous day
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.DATE, dateStatus ? 1 : -1);
+        calendar.add(Calendar.DATE, dateStatus == null ? 0 : dateStatus ? 1 : -1);
         date = calendar.getTime();
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 
-        Fitness fitness = databaseFitness.getFitness(sharedPreferences.getInt(LoginActivity.ID_KEY, 0), WALKING.getValue(), format.format(date));
-        setFitnessValue(fitness);
+        Fitness fitness = databaseFitness.getFitness(sharedPreferences.getInt(ID_KEY, 0), WALKING.getValue(), format.format(date));
+        setFitnessWalkingValue(fitness);
+        fitness = databaseFitness.getFitness(sharedPreferences.getInt(ID_KEY, 0), RUNNING.getValue(), format.format(date));
+        setFitnessRunningValue(fitness);
     }
 
-    private void setFitnessValue(Fitness fitness) { //Initialize all the fitness value
+    private void setFitnessWalkingValue(Fitness fitness) { //Initialize all the fitness value
         SimpleDateFormat format = new SimpleDateFormat("E, MMM dd yyyy");
         historyDate.setText(format.format(date));
         historyStepsWalking.setText(fitness.getValue() + " steps");
         historyCaloriesWalking.setText(convertStepsToCalorie(fitness.getValue()) + " cal");
         historyWalkingBar.setProgress((int) Math.round(fitness.getValue()));
+    }
+    private void setFitnessRunningValue(Fitness fitness) { //Initialize all the fitness value
+        SimpleDateFormat format = new SimpleDateFormat("E, MMM dd yyyy");
+        historyDate.setText(format.format(date));
+        historyStepsRunning.setText(fitness.getValue() + " steps");
+        historyCaloriesRunning.setText(convertStepsToCalorie(fitness.getValue()) + " cal");
     }
 
     private void initListener() { //Initialize all listener

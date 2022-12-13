@@ -1,4 +1,4 @@
-package com.gmail.gardion01.fitnesstracker.service;
+package com.gmail.gardion01.fitnesstracker.receiver;
 
 import static com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity.MAIN_DATE_STEP;
 import static com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity.MAIN_STEP_COUNTER;

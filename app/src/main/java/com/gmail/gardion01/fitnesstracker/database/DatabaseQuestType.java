@@ -17,7 +17,7 @@ public class DatabaseQuestType extends DatabaseMain {
     public static final String COLUMN_QUEST_TYPE_ID = "questTypeId";
     private static final String COLUMN_FITNESS_TYPE = "fitnessType";
     private static final String COLUMN_QUEST_NAME = "questName";
-    private static final String COLUMN_QUEST_TARGET_VALUE = "questMTargetValue";
+    private static final String COLUMN_QUEST_TARGET_VALUE = "questTargetValue";
     public static String CREATE_QUEST_TYPE_TABLE = "CREATE TABLE " + TABLE_QUEST_TYPE + "("
             + COLUMN_QUEST_TYPE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_FITNESS_TYPE + " INTEGER,"
             + COLUMN_QUEST_NAME + " STRING," + COLUMN_QUEST_TARGET_VALUE + " INTEGER, "

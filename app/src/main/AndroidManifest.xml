@@ -8,6 +8,7 @@
 
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
 
@@ -56,7 +57,7 @@
             android:name="com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity"
             android:theme="@style/Theme.FitnessTracker.NoActionBar"
             android:exported="false" />
-        <receiver android:name="com.gmail.gardion01.fitnesstracker.service.UpdateDatabaseReceiver" />
+        <receiver android:name="com.gmail.gardion01.fitnesstracker.receiver.UpdateDatabaseReceiver" />
 
         <activity
             android:name="com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity"
@@ -75,6 +76,13 @@
             android:exported="false"
             android:parentActivityName="com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity"
             android:theme="@style/Theme.FitnessTracker"/>
+        <receiver android:name="com.gmail.gardion01.fitnesstracker.receiver.StartOnBootUpReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

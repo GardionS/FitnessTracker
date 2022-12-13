@@ -45,7 +45,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/black" />
+        android:background="@color/line" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -66,7 +66,7 @@
                 android:max="6000"
                 android:progress="0"
                 android:progressDrawable="@drawable/ciruclar_progress" />
-
+<!--        A Progress bar indicating how much the user have progress on walking in that day-->
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="100dp"
@@ -82,7 +82,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/black" />
+        android:background="@color/line" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -97,50 +97,99 @@
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <RelativeLayout
+<!--        Using a scroll view so that if there are a lot of fitness, it can extend downward    -->
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+<!--            Using a linear layout so that it can extend downward        -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp">
 
-                    <ImageView
-                        android:id="@+id/iconWalking"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_centerVertical="true"
-                        android:paddingStart="15dp"
-                        app:srcCompat="@drawable/ic_baseline_directions_walk_24" />
+                        <ImageView
+                            android:id="@+id/iconWalking"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerVertical="true"
+                            android:paddingStart="15dp"
+                            app:srcCompat="@drawable/ic_baseline_directions_walk_24" />
 
-                    <TextView
-                        android:id="@+id/historyWalking"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="25dp"
-                        android:layout_toRightOf="@+id/iconWalking"
-                        android:text="Walking"
-                        android:textSize="20dp" />
+                        <TextView
+                            android:id="@+id/historyWalking"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="25dp"
+                            android:layout_toRightOf="@+id/iconWalking"
+                            android:text="Walking"
+                            android:textSize="20dp" />
 
-                    <TextView
-                        android:id="@+id/historyCaloriesWalking"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dp"
-                        android:layout_toLeftOf="@+id/historyStepsWalking"
-                        android:text="0 Calories"
-                        android:textSize="13dp" />
+                        <TextView
+                            android:id="@+id/historyCaloriesWalking"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="15dp"
+                            android:layout_toLeftOf="@+id/historyStepsWalking"
+                            android:text="0 Calories"
+                            android:textSize="13dp" />
 
-                    <TextView
-                        android:id="@+id/historyStepsWalking"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="15dp"
-                        android:text="0 Steps"
-                        android:textSize="13dp" />
+                        <TextView
+                            android:id="@+id/historyStepsWalking"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="15dp"
+                            android:text="0 Steps"
+                            android:textSize="13dp" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="10dp">
 
-                </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/iconRunning"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerVertical="true"
+                            android:paddingStart="15dp"
+                            app:srcCompat="@drawable/ic_baseline_directions_run_24" />
+
+                        <TextView
+                            android:id="@+id/historyRunning"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="25dp"
+                            android:layout_toRightOf="@+id/iconRunning"
+                            android:text="Running"
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/historyCaloriesRunning"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="15dp"
+                            android:layout_toLeftOf="@+id/historyStepsRunning"
+                            android:text="0 Calories"
+                            android:textSize="13dp" />
+
+                        <TextView
+                            android:id="@+id/historyStepsRunning"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="15dp"
+                            android:text="0 Steps"
+                            android:textSize="13dp" />
+
+                    </RelativeLayout>
+                </LinearLayout>
             </ScrollView>
 
         </LinearLayout>

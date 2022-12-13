@@ -63,6 +63,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void checkLogin() {//Auto login since there has been share preference initialized
+
+
         if (!sharedPreferences.getString(EMAIL_KEY, "").equals("")) {
             goToMainScreen();
         }
@@ -115,7 +117,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor.putInt(MAIN_DAILY_QUEST_TARGET, questType.getQuestTargetValue());
         DatabaseQuest databaseQuest = new DatabaseQuest(this);
         Quest quest = databaseQuest.getQuest(user.getId(), DAILY_QUEST.getValue(), DatabaseMain.getCurrentDate("dd-MM-yyyy"));
-        editor.putBoolean(HomeActivity.MAIN_DAILY_QUEST, quest.getValue() > questType.getQuestTargetValue());
+        editor.putBoolean(HomeActivity.MAIN_DAILY_QUEST, quest.isValue() );
 
         DatabaseFitnessType databaseFitnessType = new DatabaseFitnessType(this);
         FitnessType fitnessType = databaseFitnessType.getFitnessType(WALKING.getValue());

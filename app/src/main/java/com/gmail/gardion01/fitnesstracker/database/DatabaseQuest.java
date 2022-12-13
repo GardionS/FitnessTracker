@@ -22,7 +22,7 @@ public class DatabaseQuest extends DatabaseMain{
     private static final String COLUMN_QUEST_VALUE = "questValue";
     public static String CREATE_QUEST_TABLE = "CREATE TABLE " + TABLE_QUEST + "("
             + COLUMN_QUEST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_ID + " INTEGER,"
-            + COLUMN_QUEST_TYPE + " INTEGER," + COLUMN_QUEST_DATE + " STRING, " + COLUMN_QUEST_VALUE + " INTEGER, "
+            + COLUMN_QUEST_TYPE + " INTEGER," + COLUMN_QUEST_DATE + " STRING, " + COLUMN_QUEST_VALUE + " BOOLEAN, "
             + "FOREIGN KEY (" + COLUMN_USER_ID + ") "
             + " REFERENCES " + DatabaseUser.TABLE_USER + " (" + DatabaseUser.COLUMN_USER_ID + "), "
             + "FOREIGN KEY (" + COLUMN_QUEST_TYPE + ") "
@@ -34,7 +34,7 @@ public class DatabaseQuest extends DatabaseMain{
         super(context);
     }
 
-    public void addQuest(int userId, int questTypeId, String date, int value) {
+    public void addQuest(int userId, int questTypeId, String date, boolean value) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_ID, userId);
@@ -66,13 +66,13 @@ public class DatabaseQuest extends DatabaseMain{
         if (cursor.moveToFirst()) { //Check if there is data
 
             quest.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_QUEST_ID))));
-            quest.setValue(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_QUEST_VALUE))));
+            quest.setValue(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_QUEST_VALUE))));
         }
         cursor.close();
         db.close();
         return quest;
     }
-    public void completeQuest(int userId, int questType, String date, int value) {
+    public void completeQuest(int userId, int questType, String date, boolean value) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_QUEST_VALUE, value);

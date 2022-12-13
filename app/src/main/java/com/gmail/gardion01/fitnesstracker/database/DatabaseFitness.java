@@ -13,9 +13,9 @@ public class DatabaseFitness extends DatabaseMain {
     public static final String TABLE_FITNESS = "Fitness";
     public static final String COLUMN_FITNESS_ID = "fitnessID";
     public static final String COLUMN_USER_ID = "userID";
-    public static final String COLUMN_FITNESS_TYPE = "fitnessTypeId";
+    public static final String COLUMN_FITNESS_TYPE = "fitnessType";
     public static final String COLUMN_DATE = "fitnessDate";
-    public static final String COLUMN_VALUE = "fitnessRunning";
+    public static final String COLUMN_VALUE = "fitnessValue";
     public static String CREATE_FITNESS_TABLE = "CREATE TABLE " + TABLE_FITNESS + "("
             + COLUMN_FITNESS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_ID + " INTEGER,"
             + COLUMN_FITNESS_TYPE + " INTEGER, " + COLUMN_DATE + " STRING,"  + COLUMN_VALUE + " INTEGER,"
@@ -42,7 +42,17 @@ public class DatabaseFitness extends DatabaseMain {
         db.insert(TABLE_FITNESS, null, values);
         db.close();
     }
+    public void addFitness(int userId, int type, String date) { //Specific Date
 
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_ID, userId);
+        values.put(COLUMN_DATE, date);
+        values.put(COLUMN_FITNESS_TYPE, type);
+        values.put(COLUMN_VALUE, 0);
+        db.insert(TABLE_FITNESS, null, values);
+        db.close();
+    }
     @SuppressLint("Range")
     public Fitness getFitness(int userId, int type, String date) {
 

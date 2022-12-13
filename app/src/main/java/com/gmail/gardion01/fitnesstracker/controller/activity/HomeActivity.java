@@ -56,7 +56,6 @@ public class HomeActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, homeFragment).commit();
             stack.add("home");
         }
-
         initBottomNavigation();
     }
     private void initBottomNavigation() { //Select bottom navigation and replace the frame with the fragment.
@@ -121,7 +120,7 @@ public class HomeActivity extends AppCompatActivity {
     private void startForegroundServices() { //Start the foreground service
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(
-                    SERVICE_ID, "TestingService", NotificationManager.IMPORTANCE_LOW
+                    SERVICE_ID, "FitnessTracker", NotificationManager.IMPORTANCE_LOW
             );
             notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(notificationChannel); //Create notification

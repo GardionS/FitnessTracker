@@ -33,12 +33,12 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+<!--Use a scroll so that if there are a lot of fitness, it can hold all of them-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
+<!--    Inside a scroll view, require a linear layout so that it can extend downward-->
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -96,6 +96,7 @@
                             android:clickable="true"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="15dp"/>
+<!--                    The play button will be change to pause button when pressed in the java-->
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
 

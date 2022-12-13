@@ -90,6 +90,7 @@ public class HomeFragment extends Fragment {
                     public void run() {
                         if (model.getBinder().getValue() != null) {
                             if (model.getStepData() != null) {
+
                                 steps.setText(model.getStepData().getValue() + " steps"); //Update the step data
                                 dailyQuestProgress.setText(model.getStepData().getValue() + "/" + sharedPreferences.getInt(MAIN_DAILY_QUEST_TARGET, 0) + " steps"); //Update the quest data
                             }
@@ -140,10 +141,10 @@ public class HomeFragment extends Fragment {
 
         setObservers(); //Set the observer for live data
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //Use animation for newer version
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && false) { //Use animation for newer version
             stepsBar.setProgress(sharedPreferences.getInt(HomeActivity.MAIN_STEP_COUNTER, 0), true); //Set step bar
             barExp.setProgress(exp % 1000, true); //Set exp bar
-        } else { //OLder version cannot user animation
+        } else { //Older version cannot user animation
             stepsBar.setProgress(sharedPreferences.getInt(HomeActivity.MAIN_STEP_COUNTER, 0)); //Set step bar
             barExp.setProgress(exp % 1000); //Set exp bar
         }
