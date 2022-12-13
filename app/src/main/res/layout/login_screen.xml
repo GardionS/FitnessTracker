@@ -67,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-
+<!--Using relative layout so that it can have a better design and show it in the middle    -->
         <Button
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
