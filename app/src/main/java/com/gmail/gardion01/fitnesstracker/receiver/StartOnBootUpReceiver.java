@@ -32,11 +32,7 @@ public class StartOnBootUpReceiver extends BroadcastReceiver {
     }
 
     private void startForegroundServices() { //Start the foreground service
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(SERVICE_ID, "FitnessTracker", NotificationManager.IMPORTANCE_LOW);
-            notificationManager = context.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(notificationChannel); //Create notification
-        }
+
         Intent foregroundService = new Intent(context, ForegroundService.class);
         foregroundService.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

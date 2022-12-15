@@ -120,13 +120,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void startForegroundServices() { //Start the foreground service
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(
-                    SERVICE_ID, "FitnessTracker", NotificationManager.IMPORTANCE_LOW
-            );
-            notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(notificationChannel); //Create notification
-        }
         Intent foregroundService = new Intent(this, ForegroundService.class);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

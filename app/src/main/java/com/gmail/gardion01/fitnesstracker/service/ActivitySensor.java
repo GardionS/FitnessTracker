@@ -10,9 +10,12 @@ import static com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivi
 import static com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity.ID_KEY;
 import static com.gmail.gardion01.fitnesstracker.enumeration.FitnessType.WALKING;
 import static com.gmail.gardion01.fitnesstracker.enumeration.QuestType.DAILY_QUEST;
+import static com.gmail.gardion01.fitnesstracker.service.ForegroundService.SERVICE_ID;
 
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +24,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 
 import com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity;
 import com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity;
@@ -43,13 +47,18 @@ public class ActivitySensor implements SensorEventListener {
     private DatabaseUser databaseUser;
     private AlarmManager alarmManager;
     private HashMap<Integer, Boolean> questList; //If there is multiple quest
-
+    private NotificationManager notificationManager;
     public ActivitySensor(Context context) {
         this.context = context;
         initVariable();
     }
 
     public void initVariable() { //Initialize all variable
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(SERVICE_ID, "FitnessTracker", NotificationManager.IMPORTANCE_LOW);
+            notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(notificationChannel); //Create notification
+        }
         questList = new HashMap<>();
         sharedPreferences = context.getSharedPreferences(LoginActivity.SHARED_PREFS, Context.MODE_PRIVATE);
 
@@ -137,7 +146,7 @@ public class ActivitySensor implements SensorEventListener {
 
     private void updateNotification() { //Update notification to indicate live
         ForegroundService.builder.setContentText("You have walk " + stepCount + " steps");
-        HomeActivity.notificationManager.notify(ForegroundService.NOTIFICATION_ID, ForegroundService.builder.build());
+        notificationManager.notify(ForegroundService.NOTIFICATION_ID, ForegroundService.builder.build());
     }
 
     private void setAutoUpdating() { //Set updating for the database
