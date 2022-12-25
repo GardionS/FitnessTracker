@@ -133,20 +133,23 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() { //Press back button and will go to the history to check which button was pressed last
         Menu menu = bottomNavigationView.getMenu();
-
         String backFragment = (String) stack.pop();
         switch (backFragment) {
             case "home":
                 menu.getItem(0).setChecked(true);
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, homeFragment).addToBackStack(null).commit(); //Change the frame to homeFragment
                 break;
             case "activity":
                 menu.getItem(1).setChecked(true);
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, activityFragment).addToBackStack(null).commit(); //Change the frame to activityFragment
                 break;
             case "history":
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, historyFragment).addToBackStack(null).commit(); //Change the frame to historyFragment
                 menu.getItem(2).setChecked(true);
                 break;
             case "profile":
                 menu.getItem(3).setChecked(true);
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, profileFragment).addToBackStack(null).commit(); //Change the frame to profileFragment
                 break;
         }
     }
