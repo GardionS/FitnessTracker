@@ -2,31 +2,87 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.sensor.accelerometer"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <application
+
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FitnessTracker"
         tools:targetApi="31">
+        <service
+            android:name="com.gmail.gardion01.fitnesstracker.service.ForegroundService"
+            android:enabled="true" />
+        <service
+            android:name="com.gmail.gardion01.fitnesstracker.service.BoundService"
+            android:enabled="true" />
+
         <activity
-            android:name=".MainActivity"
+            android:name="com.gmail.gardion01.fitnesstracker.controller.activity.SplashActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.FitnessTracker.NoActionBar">
+            android:theme="@style/Theme.FitnessTracker.NoActionBar"
+            android:noHistory="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
+        <activity
+            android:name="com.gmail.gardion01.fitnesstracker.controller.activity.MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.FitnessTracker">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+        <meta-data
+            android:name="android.app.lib_name"
+            android:value="" />
+        <activity
+            android:name="com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity"
+            android:theme="@style/Theme.FitnessTracker.NoActionBar"
+            android:exported="false" />
+        <receiver android:name="com.gmail.gardion01.fitnesstracker.receiver.UpdateDatabaseReceiver" />
+
+        <activity
+            android:name="com.gmail.gardion01.fitnesstracker.controller.activity.LoginActivity"
+            android:theme="@style/Theme.FitnessTracker.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name="com.gmail.gardion01.fitnesstracker.controller.activity.RegisterActivity"
+            android:theme="@style/Theme.FitnessTracker.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name="com.gmail.gardion01.fitnesstracker.controller.activity.EditProfileActivity"
+            android:parentActivityName="com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity"
+            android:theme="@style/Theme.FitnessTracker"/>
+        <activity
+            android:name="com.gmail.gardion01.fitnesstracker.controller.activity.ChangePasswordActivity"
+            android:exported="false"
+            android:parentActivityName="com.gmail.gardion01.fitnesstracker.controller.activity.HomeActivity"
+            android:theme="@style/Theme.FitnessTracker"/>
+        <receiver android:name="com.gmail.gardion01.fitnesstracker.receiver.StartOnBootUpReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
